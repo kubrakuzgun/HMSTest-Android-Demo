@@ -6,40 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".ToDoActivity">
 
-    <View
-        android:id="@+id/view_blurbackground4"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4A393939"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible" />
+        android:orientation="vertical">
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:context=".MainActivity"
-        tools:openDrawer="start">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="To Do"
+            app:titleTextColor="#E9F8F6F6" />
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#F1EBEB"
-            app:headerLayout="@layout/mainmenu_header"
-            app:menu="@menu/main_menu" />
+            android:layout_height="wrap_content"
+            android:text="Task"
+            android:textSize="30sp"/>
+        <EditText
+            android:id="@+id/edtxt_Task"
+            android:layout_width="350sp"
+            android:layout_height="80sp"
+            android:backgroundTint="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Time"
+            android:textSize="30sp"/>
+        <EditText
+            android:id="@+id/edtxt_toDoStart"
+            android:layout_width="350sp"
+            android:layout_height="80sp"
+            android:backgroundTint="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Time"
+            android:textSize="30sp"/>
+        <EditText
+            android:id="@+id/edtxt_toDoEnd"
+            android:layout_width="350sp"
+            android:layout_height="80sp"
+            android:backgroundTint="@color/black"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="80dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+<Button
+    android:id="@+id/btn_toDoOK"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="20dp"
+    android:text="OK"
+    android:layout_gravity="center"/>
+            <View
+                android:layout_width="30dp"
+                android:layout_height="0dp"/>
+        <Button
+            android:id="@+id/btn_toDoCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textSize="20dp"
+            android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,23 +23,18 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private DatabaseHelper databaseHelper;
-    private DrawerLayout drawerLayout;
-    private NavigationView navView;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    View blurView;
+public class MainActivity extends AppCompatActivity {
+    ImageButton btn_editToDo, btn_addToDo, btn_editMeeting, btn_addMeeting, btn_editBirth, btn_addBirth;
+    CheckBox chk_ToDo;
+    Button btn_Today, btn_Calendar, btn_Settings, btn_Me;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        databaseHelper = new DatabaseHelper(MainActivity.this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
-
+        buttonDefinition();
+        //editButtonsClick();
+        addButtonsClick();
         TextView textDD = findViewById(R.id.text_dd);
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
@@ -56,113 +53,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textDay.setText(day_string);
 
 
-        //side menu
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerLayout.closeDrawer(GravityCompat.START);
+    }
 
-        navView = findViewById(R.id.nav_view);
-        navView.setNavigationItemSelectedListener(this);
+    public void buttonDefinition() {
+        btn_addToDo = (ImageButton) findViewById(R.id.btn_mainAddToDo);
+        btn_editToDo = (ImageButton) findViewById(R.id.btn_mainEditTodo);
+        btn_addMeeting = (ImageButton) findViewById(R.id.btn_mainAddMeeting);
+        btn_editMeeting = (ImageButton) findViewById(R.id.btn_mainEditMeeting);
+        btn_addBirth = (ImageButton) findViewById(R.id.btn_mainAddBirth);
+        btn_editBirth = (ImageButton) findViewById(R.id.btn_mainEditBirth);
+        btn_Today = (Button) findViewById(R.id.btn_todayTab);
+        btn_Calendar = (Button) findViewById(R.id.btn_CalendarTab);
+        btn_Settings = (Button) findViewById(R.id.btn_SettingsTab);
+        btn_Me = (Button) findViewById(R.id.btn_MeTab);
+    }
 
-        blurView = findViewById(R.id.view_blurbackground);
-        blurView.setVisibility(View.INVISIBLE);
-
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+    public void addButtonsClick(){
+        //add to do
+        btn_addToDo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDrawerOpened(View drawerView) {
-                blurView.setVisibility(View.VISIBLE);
-                super.onDrawerOpened(drawerView);
-            }
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                blurView.setVisibility(View.INVISIBLE);
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                if (newState == DrawerLayout.STATE_SETTLING) {
-                    if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        Animation blurAnimation =
-                                AnimationUtils.loadAnimation(getApplicationContext(),
-                                        R.anim.fade_in);
-                        blurView.startAnimation(blurAnimation);
-                    } else {
-                        Animation blurAnimation =
-                                AnimationUtils.loadAnimation(getApplicationContext(),
-                                        R.anim.fade_out);
-                        blurView.startAnimation(blurAnimation);
-                    }
-                }
-                super.onDrawerStateChanged(newState);
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ToDoActivity.class);
+                startActivity(intent);
             }
         });
+        //add meeting
+        btn_addMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MeetingActivity.class);
+                startActivity(intent);
 
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        switch (item.getItemId()) {
-
-            case R.id.nav_calendar: {
-                Intent calendarIntent = new Intent(MainActivity.this, CalendarActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(calendarIntent);
-                break;
             }
-            case R.id.nav_todo: {
-                Intent todoIntent = new Intent(MainActivity.this, ToDoActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(todoIntent);
-                break;
+        });
+        // add birthday
+        btn_addBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Birthday.class);
+                startActivity(intent);
             }
-            case R.id.nav_notes: {
-                Intent notesIntent = new Intent(MainActivity.this, NotesActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(notesIntent);
-                break;
-            }
-            case R.id.nav_profile: {
-                Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(profileIntent);
-                break;
-            }
-            case R.id.nav_logout: {
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
-                break;
-            }
-            case R.id.nav_settings: {
-                editor.clear();
-                editor.apply();
-                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(settingsIntent);
-                break;
-            }
-
-        }
-        //close navigation drawer
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
-
-    @Override
-    public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
-            finishAffinity();
-        }
+        });
     }
 
 }

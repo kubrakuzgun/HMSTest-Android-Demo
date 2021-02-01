@@ -16,114 +16,13 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class ToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseHelper databaseHelper;
-    private DrawerLayout drawerLayout;
-    private NavigationView navView;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    View blurView;
+public class ToDoActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
 
-        databaseHelper = new DatabaseHelper(ToDoActivity.this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
 
-        //side menu
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        navView = findViewById(R.id.nav_view);
-        navView.setNavigationItemSelectedListener(this);
-
-        blurView = findViewById(R.id.view_blurbackground4);
-        blurView.setVisibility(View.INVISIBLE);
-
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                blurView.setVisibility(View.VISIBLE);
-                super.onDrawerOpened(drawerView);
-            }
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                blurView.setVisibility(View.INVISIBLE);
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                if (newState == DrawerLayout.STATE_SETTLING) {
-                    if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        Animation blurAnimation =
-                                AnimationUtils.loadAnimation(getApplicationContext(),
-                                        R.anim.fade_in);
-                        blurView.startAnimation(blurAnimation);
-                    } else {
-                        Animation blurAnimation =
-                                AnimationUtils.loadAnimation(getApplicationContext(),
-                                        R.anim.fade_out);
-                        blurView.startAnimation(blurAnimation);
-                    }
-                }
-                super.onDrawerStateChanged(newState);
-            }
-        });
-
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        switch (item.getItemId()) {
-
-            case R.id.nav_home: {
-                Intent profileIntent = new Intent(ToDoActivity.this, MainActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(profileIntent);
-                break;
-            }
-            case R.id.nav_calendar: {
-                Intent calendarIntent = new Intent(ToDoActivity.this, CalendarActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(calendarIntent);
-                break;
-            }
-            case R.id.nav_notes: {
-                Intent notesIntent = new Intent(ToDoActivity.this, NotesActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(notesIntent);
-                break;
-            }
-            case R.id.nav_profile: {
-                Intent profileIntent = new Intent(ToDoActivity.this, ProfileActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(profileIntent);
-                break;
-            }
-            case R.id.nav_logout: {
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(ToDoActivity.this, LoginActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
-                break;
-            }
-            case R.id.nav_settings: {
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(ToDoActivity.this, SettingsActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
-                break;
-            }
-        }
-        //close navigation drawer
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

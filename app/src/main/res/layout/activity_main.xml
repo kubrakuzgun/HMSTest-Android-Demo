@@ -7,112 +7,275 @@
     android:background="#FBF6F6"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/view_image"
-        android:layout_width="match_parent"
-        android:layout_height="244dp"
-        android:background="@drawable/mainscreen_headerbackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/text_dd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="01"
-        android:textColor="#E9F8F6F6"
-        android:textSize="58sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view_image"
-        app:layout_constraintEnd_toEndOf="@+id/view_image"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.828" />
-
-    <TextView
-        android:id="@+id/text_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:gravity="start|left"
-        android:text="Monday"
-        android:textColor="#E9F8F6F6"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dd"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
-
-    <TextView
-        android:id="@+id/text_month"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:gravity="start|left"
-        android:text="January"
-        android:textColor="#E9F8F6F6"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_dd"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.697" />
-
-    <ImageView
-        android:id="@+id/header_text"
-        android:layout_width="331dp"
-        android:layout_height="83dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.136"
-        app:srcCompat="@drawable/plantheday_text_2" />
-
-    <View
-        android:id="@+id/view_blurbackground"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4A393939"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible" />
+        android:orientation="vertical">
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:context=".MainActivity"
-        tools:openDrawer="start">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="244dp"
+            android:background="@drawable/mainscreen_headerbackground"
+            android:orientation="vertical">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30sp" />
+
+            <ImageView
+                android:layout_width="331dp"
+                android:layout_height="83dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/plantheday_text_2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="40sp">
+
+                <TextView
+                    android:id="@+id/text_dd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01"
+                    android:textColor="#E9F8F6F6"
+                    android:textSize="58sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingTop="10sp">
+
+                    <TextView
+                        android:id="@+id/text_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="January"
+                        android:textColor="#E9F8F6F6"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Monday"
+                        android:textColor="#E9F8F6F6"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:background="#F1EBEB"
-            app:headerLayout="@layout/mainmenu_header"
-            app:menu="@menu/main_menu" />
+            android:orientation="horizontal"
+            android:paddingLeft="20sp">
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To Do"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="150sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainEditTodo"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/editicon" />
+
+            <View
+                android:layout_width="10sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainAddToDo"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/addicon" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/check_todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#E9F8F6F6"
+            android:paddingLeft="10sp"
+            android:text="No task assigned for today" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:orientation="horizontal"
+            android:paddingLeft="20sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meetings"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="100sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainEditMeeting"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/editicon" />
+
+            <View
+                android:layout_width="10sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainAddMeeting"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/addicon" />
+
+        </LinearLayout>
 
 
+        <TextView
+            android:id="@+id/txt_meeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40sp"
+            android:paddingTop="20sp"
+            android:text="No meeting scheduled for today" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:orientation="horizontal"
+            android:paddingLeft="20sp">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Birthday"
+                android:textColor="#000"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="115sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainEditBirth"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/editicon" />
+
+            <View
+                android:layout_width="10sp"
+                android:layout_height="0dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mainAddBirth"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/edittext_transparent"
+                android:src="@drawable/addicon" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40sp"
+            android:paddingTop="20sp"
+            android:text="No birthday recorded for today" />
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="100dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_todayTab"
+                android:layout_width="109dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FBF6F6"
+                android:drawableTop="@drawable/today"
+                android:text="Today"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/btn_CalendarTab"
+                android:layout_width="109dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FBF6F6"
+                android:drawableTop="@drawable/calendar"
+                android:text="Calendar"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/btn_SettingsTab"
+                android:layout_width="109dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FBF6F6"
+                android:drawableTop="@drawable/settings"
+                android:text="Settings"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/btn_MeTab"
+                android:layout_width="109dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FBF6F6"
+                android:drawableTop="@drawable/profile"
+                android:text="Me"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

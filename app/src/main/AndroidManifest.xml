@@ -10,15 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidDemo">
         <activity
+            android:name=".Birthday"
+            android:label="@string/title_activity_birthday"
+            android:theme="@style/Theme.AndroidDemo.NoActionBar"></activity>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
+            android:theme="@style/Theme.AndroidDemo.NoActionBar" />
         <activity
-            android:name=".NotesActivity"
-            android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
+            android:name=".MeetingActivity"
+            android:theme="@style/Theme.AndroidDemo.NoActionBar" />
         <activity
             android:name=".ToDoActivity"
-            android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
+            android:theme="@style/Theme.AndroidDemo.NoActionBar" />
         <activity android:name=".CalendarActivity" />
         <activity
             android:name=".ProfileActivity"
