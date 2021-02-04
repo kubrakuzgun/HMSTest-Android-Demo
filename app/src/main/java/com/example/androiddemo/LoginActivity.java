@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +16,15 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private DatabaseHelper databaseHelper;
+    private String user;
+
+    public void setUser(String currentuser){
+        user = currentuser;
+    }
 
     public void goToMainActivity(){
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        mainIntent.putExtra("username", user);
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         startActivity(mainIntent);
     }
@@ -44,9 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
-
-
         if (preferences.contains("isLoggedIn")){   //go to main activity if user already logged in
+            setUser(preferences.getString("username", ""));
+            Log.d("username", user);
             goToMainActivity();
         }
         else{   //continue login activity if user not logged in
@@ -61,9 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if(!checkIfFieldsEmpty(username) && !checkIfFieldsEmpty(password)){
                         if(databaseHelper.checkCredentials(username.getText().toString().trim(),password.getText().toString())){
+                            setUser(username.getText().toString().trim());
                             editor.putBoolean("isLoggedIn",true);
+                            editor.putString("username", username.getText().toString().trim());
                             editor.apply();
                             goToMainActivity();
+
                         }
                         else{
                             CustomErrorDialog alert = new CustomErrorDialog();
@@ -74,14 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                    overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                    startActivity(registerIntent);
-                }
-            });
         }
 
     }
@@ -92,6 +94,10 @@ public class LoginActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-
+    public void goToRegister(View v){
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        startActivity(registerIntent);
+    }
 
 }

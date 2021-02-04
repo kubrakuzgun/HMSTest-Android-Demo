@@ -3,7 +3,9 @@ package com.example.androiddemo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +15,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private User user;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     //check empty inputs
     public boolean checkIfFieldsEmpty(EditText field){
@@ -33,13 +37,17 @@ public class RegisterActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(RegisterActivity.this);
         user = new User();
 
-
         EditText username = findViewById(R.id.edittext_username);
         EditText email = findViewById(R.id.edittext_email);
         EditText password = findViewById(R.id.edittext_psw);
         EditText confirmPassword = findViewById(R.id.edittext_pswconfirm);
         Button btn_register = findViewById(R.id.button_logout);
         TextView login = findViewById(R.id.clickabletext_login);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = preferences.edit();
+        editor.putBoolean("isLoggedIn",false);
+        editor.apply();
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,10 +57,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if ( !checkIfFieldsEmpty(username) && !checkIfFieldsEmpty(email) && !checkIfFieldsEmpty(password) && !checkIfFieldsEmpty(confirmPassword) ){
                     //check password length
                     if(password.getText().toString().trim().length()<6){
-                        password.setError("Şifre en az 6 karakter olmalıdır.");
+                        password.setError("Password must be at least 6 characters.");
                     }
                     else if(!password.getText().toString().equals(confirmPassword.getText().toString())){
-                        confirmPassword.setError("Şifreler uyuşmuyor.");
+                        confirmPassword.setError("Passwords do not match.");
                     }
                     else {
                         //create user
@@ -62,10 +70,15 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setEmail(email.getText().toString().trim());
                                 user.setPassword(password.getText().toString().trim());
                                 databaseHelper.addUser(user);
+                                editor = preferences.edit();
+                                editor.putBoolean("isLoggedIn",true);
+                                editor.apply();
+                                editor.putString("username", user.getUsername());
+                                editor.apply();
                                 Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                mainIntent.putExtra("username", user.getUsername());
                                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                                 startActivity(mainIntent);
-
                             }
                             else
                             {
@@ -82,14 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
-            }
-        });
 
     }
 
@@ -97,6 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         finishAffinity();
+    }
+
+    public void goToLogin(View v){
+        Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        startActivity(loginIntent);
     }
 
 }

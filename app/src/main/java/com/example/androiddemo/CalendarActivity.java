@@ -95,8 +95,8 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
                 startActivity(todoIntent);
                 break;
             }
-            case R.id.nav_notes: {
-                Intent notesIntent = new Intent(CalendarActivity.this, NotesActivity.class);
+            case R.id.nav_meetings: {
+                Intent notesIntent = new Intent(CalendarActivity.this, MeetingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(notesIntent);
                 break;

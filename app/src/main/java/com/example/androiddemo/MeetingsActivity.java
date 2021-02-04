@@ -16,7 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class NotesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MeetingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseHelper databaseHelper;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -28,7 +28,7 @@ public class NotesActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        databaseHelper = new DatabaseHelper(NotesActivity.this);
+        databaseHelper = new DatabaseHelper(MeetingsActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
@@ -38,6 +38,7 @@ public class NotesActivity extends AppCompatActivity implements NavigationView.O
 
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
+
 
         blurView = findViewById(R.id.view_blurbackground5);
         blurView.setVisibility(View.INVISIBLE);
@@ -81,26 +82,26 @@ public class NotesActivity extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()) {
 
             case R.id.nav_home: {
-                Intent profileIntent = new Intent(NotesActivity.this, MainActivity.class);
+                Intent profileIntent = new Intent(MeetingsActivity.this, MainActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
             }
             case R.id.nav_calendar: {
-                Intent calendarIntent = new Intent(NotesActivity.this, CalendarActivity.class);
+                Intent calendarIntent = new Intent(MeetingsActivity.this, CalendarActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_todo: {
-                Intent todoIntent = new Intent(NotesActivity.this, ToDoActivity.class);
+                Intent todoIntent = new Intent(MeetingsActivity.this, ToDoActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(todoIntent);
                 break;
             }
 
             case R.id.nav_profile: {
-                Intent profileIntent = new Intent(NotesActivity.this, ProfileActivity.class);
+                Intent profileIntent = new Intent(MeetingsActivity.this, ProfileActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
@@ -108,7 +109,7 @@ public class NotesActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_logout: {
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(NotesActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(MeetingsActivity.this, LoginActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(loginIntent);
                 break;
@@ -116,7 +117,7 @@ public class NotesActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_settings: {
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(NotesActivity.this, SettingsActivity.class);
+                Intent loginIntent = new Intent(MeetingsActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(loginIntent);
                 break;

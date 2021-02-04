@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_user"
+            android:id="@+id/header_username"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="bottom|center_horizontal"
@@ -35,7 +35,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/text_detail"
+            android:id="@+id/header_userdetail"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center_horizontal|top"
