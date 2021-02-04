@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,16 +28,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
+    String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        user = getIntent().getExtras().getString("username","defaultuser");
+        Log.d("main username", user);
+
         databaseHelper = new DatabaseHelper(MainActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
-
         TextView textDD = findViewById(R.id.text_dd);
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
@@ -62,6 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
+
+        View headerView = navView.getHeaderView(0);
+        TextView navUsername = headerView.findViewById(R.id.header_username);
+        TextView navUserDetail = headerView.findViewById(R.id.header_userdetail);
+
+        navUsername.setText(user);
+        navUserDetail.setText("Level 1");
+
 
         blurView = findViewById(R.id.view_blurbackground);
         blurView.setVisibility(View.INVISIBLE);
@@ -107,29 +117,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_calendar: {
                 Intent calendarIntent = new Intent(MainActivity.this, CalendarActivity.class);
+                calendarIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_todo: {
                 Intent todoIntent = new Intent(MainActivity.this, ToDoActivity.class);
+                todoIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(todoIntent);
                 break;
             }
-            case R.id.nav_notes: {
-                Intent notesIntent = new Intent(MainActivity.this, NotesActivity.class);
+            case R.id.nav_meetings: {
+                Intent meetingsIntent = new Intent(MainActivity.this, MeetingsActivity.class);
+                meetingsIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(notesIntent);
+                startActivity(meetingsIntent);
                 break;
             }
             case R.id.nav_profile: {
                 Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                profileIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
             }
             case R.id.nav_logout: {
+                editor = preferences.edit();
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);

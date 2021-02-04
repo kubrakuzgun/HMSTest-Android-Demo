@@ -94,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="116dp"
         android:clickable="true"
+        android:onClick="goToRegister"
         android:text="Register"
         android:textColor="#E1C64A4A"
         android:textSize="18sp"

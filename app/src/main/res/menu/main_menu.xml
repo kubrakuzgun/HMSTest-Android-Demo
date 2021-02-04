@@ -19,9 +19,9 @@
             android:title="TO-DO" />
 
         <item
-            android:id="@+id/nav_notes"
-            android:icon="@drawable/notes_icon"
-            android:title="Notes" />
+            android:id="@+id/nav_meetings"
+            android:icon="@drawable/meeting_icon"
+            android:title="Meetings" />
     </group>
 
     <item android:title="Profile">
