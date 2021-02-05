@@ -297,7 +297,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Integer getIDfromUsername(String currentuser){
         // array of columns to fetch
         String[] columns = {
-                COLUMN_USER_ID
+                COLUMN_USER_ID,
+                COLUMN_USER_USERNAME
         };
         SQLiteDatabase db = this.getReadableDatabase();
         // selection criteria
