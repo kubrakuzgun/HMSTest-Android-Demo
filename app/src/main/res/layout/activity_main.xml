@@ -96,7 +96,6 @@
             tools:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -105,5 +104,6 @@
         android:background="#F1EBEB"
         app:headerLayout="@layout/mainmenu_header"
         app:menu="@menu/main_menu" />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

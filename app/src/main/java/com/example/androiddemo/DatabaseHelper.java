@@ -323,7 +323,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // fetch all user and return the list of user records
-    public List<ToDo> getAllToDo(Integer currentuser_id) {
+    public List<ToDo> getAllToDo(Integer currentuser_id, String date) {
         // array of columns to fetch
         String[] columns = {
                 COLUMN_TODO_ID,
@@ -339,16 +339,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<ToDo> todoList = new ArrayList<ToDo>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selection = COLUMN_CURRENT_USER_ID + " = ?";
+        String selection = COLUMN_CURRENT_USER_ID +" = ?"+" AND "+COLUMN_TODO_DATE+" = ?";
 
         // selection arguments
-        Integer[] selectionArgs = {currentuser_id};
+        String[] selectionArgs = {currentuser_id.toString(), date};
 
         // query the to-do table
         Cursor cursor = db.query(TABLE_TODO, //Table to query
                 columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
                 null,       //group the rows
                 null,       //filter by row groups
                 sortOrder); //The sort order
