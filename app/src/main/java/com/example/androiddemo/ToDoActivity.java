@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,14 +21,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener {
     private DatabaseHelper databaseHelper;
@@ -95,6 +100,35 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
             //attach adapter to activity's view (add card to recycler view)
             todoListView.setAdapter(mAdapter);
         }
+
+        final Calendar myCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener datedialog = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "dd/MM/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                todoDate.setText(sdf.format(myCalendar.getTime()));
+            }
+
+        };
+
+        todoDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(ToDoActivity.this, datedialog, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -164,9 +198,10 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_home: {
-                Intent profileIntent = new Intent(ToDoActivity.this, MainActivity.class);
+                Intent homeIntent = new Intent(ToDoActivity.this, MainActivity.class);
+                homeIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(profileIntent);
+                startActivity(homeIntent);
                 break;
             }
             case R.id.nav_calendar: {
@@ -247,4 +282,5 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
 
     }
+
 }

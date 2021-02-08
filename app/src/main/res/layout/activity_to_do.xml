@@ -60,6 +60,9 @@
             android:ems="10"
             android:hint="Date"
             android:inputType="date"
+            android:clickable="true"
+            android:editable="false"
+            android:focusable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_Desc" />
@@ -127,7 +130,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -139,5 +143,6 @@
         android:background="#F1EBEB"
         app:headerLayout="@layout/mainmenu_header"
         app:menu="@menu/main_menu" />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
