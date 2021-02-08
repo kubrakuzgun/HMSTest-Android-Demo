@@ -107,6 +107,10 @@ public class MeetingsActivity extends AppCompatActivity implements NavigationVie
                 break;
             }
             case R.id.nav_logout: {
+                preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                editor = preferences.edit();
+                editor.remove("isLoggedIn");
+                editor.apply();
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(MeetingsActivity.this, LoginActivity.class);
@@ -115,11 +119,9 @@ public class MeetingsActivity extends AppCompatActivity implements NavigationVie
                 break;
             }
             case R.id.nav_settings: {
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(MeetingsActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(MeetingsActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
+                startActivity(settingsIntent);
                 break;
             }
 

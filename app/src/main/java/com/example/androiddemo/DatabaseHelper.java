@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 20;
     // Database Name
     private static final String DATABASE_NAME = "DemoDatabase.db";
     // User table name
@@ -48,22 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        db.setForeignKeyConstraintsEnabled(true);
-        db.execSQL("PRAGMA foreign_keys = ON;");
-        db.enableWriteAheadLogging();
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        db.setForeignKeyConstraintsEnabled(true);
-        db.execSQL("PRAGMA foreign_keys = ON;");
-        db.enableWriteAheadLogging();
     }
 
 
@@ -203,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         };
         SQLiteDatabase db = this.getReadableDatabase();
         // selection criteria
-        String selection = COLUMN_USER_EMAIL + " = ?";
+        String selection = COLUMN_USER_USERNAME + " = ?";
 
         // selection argument
         String[] selectionArgs = {username};
@@ -268,6 +252,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_TODO, null, values);
         Log.d("todo table", "todo item added");
+        Log.d("todo ", "user id: " + todo.getTodoUserID());
         db.close();
     }
 
@@ -315,14 +300,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                       //group the rows
                 null,                      //filter by row groups
                 null);                      //The sort order
-        int id = cursor.getColumnIndex(COLUMN_USER_ID);
+        cursor.moveToFirst();
+        Integer id = cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID));
         cursor.close();
         db.close();
         return id;
     }
 
-
-    // fetch all user and return the list of user records
     public List<ToDo> getAllToDo(Integer currentuser_id) {
         // array of columns to fetch
         String[] columns = {
@@ -342,13 +326,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selection = COLUMN_CURRENT_USER_ID + " = ?";
 
         // selection arguments
-        Integer[] selectionArgs = {currentuser_id};
+        String[] selectionArgs = {currentuser_id.toString()};
 
         // query the to-do table
         Cursor cursor = db.query(TABLE_TODO, //Table to query
                 columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
                 null,       //group the rows
                 null,       //filter by row groups
                 sortOrder); //The sort order
@@ -362,13 +346,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 todo.setTodoDesc(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_DESC)));
                 todo.setTodoDate(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_DATE)));
                 todo.setTodoStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_STATUS)));
-                // Adding user record to list
+                // Adding to-do record to list
                 todoList.add(todo);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        // return user list
+        // return to-do list
+        return todoList;
+    }
+
+    public List<ToDo> getTodoByDate(Integer currentuser_id, String formattedCurrentDate) {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_TODO_ID,
+                COLUMN_CURRENT_USER_ID,
+                COLUMN_TODO_TITLE,
+                COLUMN_TODO_DESC,
+                COLUMN_TODO_DATE,
+                COLUMN_TODO_STATUS
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_TODO_ID + " ASC";
+        List<ToDo> todoList = new ArrayList<ToDo>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_CURRENT_USER_ID + " = ?" + " AND " + COLUMN_TODO_DATE + " = ?";
+
+        // selection arguments
+        String[] selectionArgs = {currentuser_id.toString(), formattedCurrentDate};
+
+        // query the to-do table
+        Cursor cursor = db.query(TABLE_TODO, //Table to query
+                columns,    //columns to return
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ToDo todo = new ToDo();
+                todo.setTodoID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_ID))));
+                todo.setTodoUserID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_CURRENT_USER_ID))));
+                todo.setTodoTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_TITLE)));
+                todo.setTodoDesc(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_DESC)));
+                todo.setTodoDate(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_DATE)));
+                todo.setTodoStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TODO_STATUS)));
+                // Adding to-do record to list
+                todoList.add(todo);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return to-do list
         return todoList;
     }
 

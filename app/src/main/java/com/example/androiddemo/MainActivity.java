@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +20,10 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -30,12 +35,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     View blurView;
     String user;
 
+    ToDoListAdapter mAdapter;
+    private List<ToDo> mTodos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = getIntent().getExtras().getString("username","defaultuser");
+        Bundle extras = getIntent().getExtras();
+
+        user= extras.getString("username");
+
         Log.d("main username", user);
 
         databaseHelper = new DatabaseHelper(MainActivity.this);
@@ -43,7 +54,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView textDD = findViewById(R.id.text_dd);
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
+        RecyclerView todaysTodoList = findViewById(R.id.todaysTodoListView);
+        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
+        TextView textNotodo = findViewById(R.id.text_notodo);
 
+
+        editor = preferences.edit();
+        editor.putBoolean("isLoggedIn",true);
+        editor.apply();
 
         //display current date
 
@@ -56,6 +74,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textDD.setText(dd_string);
         textMonth.setText(month_string);
         textDay.setText(day_string);
+
+        String myFormat = "dd/MM/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+        String formattedDate = sdf.format(currentDateTime.getTime());
+        Log.d("formatted date", formattedDate);
+
+        mTodos = new ArrayList<>();
+        mTodos.clear();
+        mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+        mAdapter = new ToDoListAdapter(MainActivity.this, mTodos);
+        if(mAdapter.getItemCount()>0){
+            textNotodo.setVisibility(View.INVISIBLE);
+            mTodos.clear();
+            mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+            //attach adapter to activity's view (add card to recycler view)
+            todaysTodoList.setAdapter(mAdapter);
+        }
+
 
 
         //side menu
