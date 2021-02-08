@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 17;
     // Database Name
     private static final String DATABASE_NAME = "DemoDatabase.db";
     // User table name
@@ -48,22 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        db.setForeignKeyConstraintsEnabled(true);
-        db.execSQL("PRAGMA foreign_keys = ON;");
-        db.enableWriteAheadLogging();
-    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        db.setForeignKeyConstraintsEnabled(true);
-        db.execSQL("PRAGMA foreign_keys = ON;");
-        db.enableWriteAheadLogging();
     }
 
 
@@ -203,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         };
         SQLiteDatabase db = this.getReadableDatabase();
         // selection criteria
-        String selection = COLUMN_USER_EMAIL + " = ?";
+        String selection = COLUMN_USER_USERNAME + " = ?";
 
         // selection argument
         String[] selectionArgs = {username};
@@ -268,6 +252,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_TODO, null, values);
         Log.d("todo table", "todo item added");
+        Log.d("todo ", "user id: " + todo.getTodoUserID());
         db.close();
     }
 
@@ -315,7 +300,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,                       //group the rows
                 null,                      //filter by row groups
                 null);                      //The sort order
-        int id = cursor.getColumnIndex(COLUMN_USER_ID);
+        cursor.moveToFirst();
+        Integer id = cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID));
         cursor.close();
         db.close();
         return id;
@@ -342,13 +328,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selection = COLUMN_CURRENT_USER_ID + " = ?";
 
         // selection arguments
-        Integer[] selectionArgs = {currentuser_id};
+        String[] selectionArgs = {currentuser_id.toString()};
 
         // query the to-do table
         Cursor cursor = db.query(TABLE_TODO, //Table to query
                 columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
                 null,       //group the rows
                 null,       //filter by row groups
                 sortOrder); //The sort order

@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     private DatabaseHelper databaseHelper;
     private String user;
+    String usernameFromRegister;
 
     public void setUser(String currentuser){
         user = currentuser;
@@ -51,16 +52,30 @@ public class LoginActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
+
         if (preferences.contains("isLoggedIn")){   //go to main activity if user already logged in
             setUser(preferences.getString("username", ""));
             Log.d("username", user);
             goToMainActivity();
         }
+
+
         else{   //continue login activity if user not logged in
             EditText username = findViewById(R.id.edittext_email);
             EditText password = findViewById(R.id.edittext_psw);
             Button btn_login = findViewById(R.id.button_logout);
-            TextView register = findViewById(R.id.clickabletext_login);
+
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    usernameFromRegister= null;
+                } else {
+                    usernameFromRegister= extras.getString("username");
+                    username.setText(usernameFromRegister);
+                }
+            } else {
+                usernameFromRegister= (String) savedInstanceState.getSerializable("username");
+            }
 
 
             btn_login.setOnClickListener(new View.OnClickListener() {

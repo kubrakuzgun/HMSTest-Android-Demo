@@ -108,6 +108,10 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
                 break;
             }
             case R.id.nav_logout: {
+                preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                editor = preferences.edit();
+                editor.remove("isLoggedIn");
+                editor.apply();
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(CalendarActivity.this, LoginActivity.class);
@@ -116,8 +120,6 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
                 break;
             }
             case R.id.nav_settings: {
-                editor.clear();
-                editor.apply();
                 Intent settingsIntent = new Intent(CalendarActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(settingsIntent);

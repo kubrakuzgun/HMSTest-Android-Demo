@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -45,11 +46,14 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
-        user = getIntent().getExtras().getString("username","defaultuser");
+
+        Bundle extras = getIntent().getExtras();
+        user= extras.getString("username");
+        Log.d("todo username", user);
+
 
         databaseHelper = new DatabaseHelper(ToDoActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
 
         //side menu
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -100,7 +104,12 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 todo.setTodoTitle(todoTitle.getText().toString().trim());
                 todo.setTodoDesc(todoDesc.getText().toString().trim());
                 todo.setTodoDate(todoDate.getText().toString().trim());
+
+                Bundle extras = getIntent().getExtras();
+                user= extras.getString("username");
+
                 todo.setTodoUserID(databaseHelper.getIDfromUsername(user));
+
                 databaseHelper.addToDo(todo);
                 mAdapter.notifyDataSetChanged();
                 mTodos.clear();
@@ -179,6 +188,10 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_logout: {
+                preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                editor = preferences.edit();
+                editor.remove("isLoggedIn");
+                editor.apply();
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(ToDoActivity.this, LoginActivity.class);
@@ -187,11 +200,9 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_settings: {
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(ToDoActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(ToDoActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(loginIntent);
+                startActivity(settingsIntent);
                 break;
             }
         }

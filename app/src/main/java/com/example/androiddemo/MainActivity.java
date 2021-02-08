@@ -35,7 +35,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = getIntent().getExtras().getString("username","defaultuser");
+        Bundle extras = getIntent().getExtras();
+
+        user= extras.getString("username");
+
         Log.d("main username", user);
 
         databaseHelper = new DatabaseHelper(MainActivity.this);
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
 
+        editor = preferences.edit();
+        editor.putBoolean("isLoggedIn",true);
+        editor.apply();
 
         //display current date
 

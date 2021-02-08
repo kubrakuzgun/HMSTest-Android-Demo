@@ -42,11 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.edittext_psw);
         EditText confirmPassword = findViewById(R.id.edittext_pswconfirm);
         Button btn_register = findViewById(R.id.button_logout);
-        TextView login = findViewById(R.id.clickabletext_login);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
-        editor.putBoolean("isLoggedIn",false);
+        editor.remove("isLoggedIn");
         editor.apply();
 
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -71,14 +70,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setPassword(password.getText().toString().trim());
                                 databaseHelper.addUser(user);
                                 editor = preferences.edit();
-                                editor.putBoolean("isLoggedIn",true);
-                                editor.apply();
                                 editor.putString("username", user.getUsername());
                                 editor.apply();
-                                Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                                mainIntent.putExtra("username", user.getUsername());
+                                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                loginIntent.putExtra("username", user.getUsername());
                                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                                startActivity(mainIntent);
+                                startActivity(loginIntent);
                             }
                             else
                             {
