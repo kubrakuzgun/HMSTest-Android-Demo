@@ -1,38 +1,49 @@
 package com.example.androiddemo;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.ListActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.navigation.NavigationView;
-
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
     ImageButton btn_editToDo, btn_addToDo, btn_editMeeting, btn_addMeeting, btn_editBirth, btn_addBirth;
-    CheckBox chk_ToDo;
+    TextView txt_ToDo;
     Button btn_Today, btn_Calendar, btn_Settings, btn_Me;
+    TextView txt_meeting, txt_Birthday;
+    dataSource ds = new dataSource(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ds.open();
+        //Listeyi ListView tipine çevirme (Adapter)
+       // List<ToDo> ToDos= ds.list();
+        //final ArrayAdapter<ToDo> adapter= new ArrayAdapter<ToDo>(this, android.R.layout.simple_expandable_list_item_1, ToDos);
+       //setListAdapter(adapter);
+
+
+        //btn_editToDo.setOnClickListener(new View.OnClickListener() {
+          //  @Override
+            //public void onClick(View view) {
+              //  ToDo t = (ToDo)getListAdapter().getItem(0);
+                //ds.deleteTask(t);
+
+            //}
+        //});
+
         buttonDefinition();
+
         //editButtonsClick();
         addButtonsClick();
         TextView textDD = findViewById(R.id.text_dd);
@@ -68,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         btn_Me = (Button) findViewById(R.id.btn_MeTab);
     }
 
-    public void addButtonsClick(){
+    public void addButtonsClick() {
         //add to do
         btn_addToDo.setOnClickListener(new View.OnClickListener() {
             @Override

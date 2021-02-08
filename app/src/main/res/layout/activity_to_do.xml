@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="30sp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -29,31 +30,54 @@
         <EditText
             android:id="@+id/edtxt_Task"
             android:layout_width="350sp"
-            android:layout_height="80sp"
+            android:layout_height="50sp"
+            android:backgroundTint="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="30sp"/>
+        <Button
+            android:id="@+id/btn_ToDoeditDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
+        <EditText
+            android:id="@+id/edtxt_toDoDate"
+            android:layout_width="300sp"
+            android:layout_height="50sp"
             android:backgroundTint="@color/black"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start Time"
             android:textSize="30sp"/>
+        <Button
+            android:id="@+id/btn_ToDoeditStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
         <EditText
             android:id="@+id/edtxt_toDoStart"
-            android:layout_width="350sp"
-            android:layout_height="80sp"
+            android:layout_width="300sp"
+            android:layout_height="50sp"
             android:backgroundTint="@color/black"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="End Time"
             android:textSize="30sp"/>
+        <Button
+            android:id="@+id/btn_ToDoeditEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
         <EditText
             android:id="@+id/edtxt_toDoEnd"
-            android:layout_width="350sp"
-            android:layout_height="80sp"
+            android:layout_width="300sp"
+            android:layout_height="50sp"
             android:backgroundTint="@color/black"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="80dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
