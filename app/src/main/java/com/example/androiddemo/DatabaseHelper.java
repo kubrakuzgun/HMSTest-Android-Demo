@@ -430,10 +430,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_TODO_TITLE, meeting.getMeetingTitle());
+        values.put(COLUMN_MEETING_TITLE, meeting.getMeetingTitle());
+        values.put(COLUMN_CURRENT_USER_ID, meeting.getMeeetingUserID());
         values.put(COLUMN_MEETING_DATE, meeting.getMeetingDate());
         values.put(COLUMN_MEETING_START, meeting.getMeetingStart());
-        values.put(COLUMN_CURRENT_USER_ID, meeting.getMeeetingUserID());
+        values.put(COLUMN_MEETING_END, meeting.getMeetingEnd());
+
         // Inserting Row
         db.insert(TABLE_MEETING, null, values);
         Log.d("meeting table", "meeting item added");

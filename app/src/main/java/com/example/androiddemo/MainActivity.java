@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         ///
         todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
+        todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
         ////
         editor = preferences.edit();
         editor.putBoolean("isLoggedIn", true);
