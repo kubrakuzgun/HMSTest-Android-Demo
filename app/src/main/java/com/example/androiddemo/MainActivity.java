@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         RecyclerView todaysTodoList = findViewById(R.id.todaysTodoListView);
         TextView textNotodo = findViewById(R.id.text_notodo);
         TextView textNoMeeting = findViewById(R.id.text_nomeeting);
-        //RecyclerView todaysMeetingList = findViewById(R.id.todaysMeetingListView);
+        RecyclerView todaysMeetingList = findViewById(R.id.todaysMeetingListView);
 
         ///
         databaseHelper = new DatabaseHelper(MainActivity.this);
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textNoMeeting.setVisibility((View.INVISIBLE));
             mMeetings.clear();
             mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user),formattedDate));
-          //  todaysMeetingList.setAdapter(meetingAdapter);
+           todaysMeetingList.setAdapter(meetingAdapter);
         }
 
 

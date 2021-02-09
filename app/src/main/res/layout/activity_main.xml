@@ -226,7 +226,6 @@
             android:id="@+id/todaysMeetingListView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -235,14 +234,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#F1EBEB"
+        app:headerLayout="@layout/mainmenu_header"
+        app:menu="@menu/main_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
-
-<com.google.android.material.navigation.NavigationView
-android:id="@+id/nav_view"
-android:layout_width="wrap_content"
-android:layout_height="match_parent"
-android:layout_gravity="start"
-android:background="#F1EBEB"
-app:headerLayout="@layout/mainmenu_header"
-app:menu="@menu/main_menu" />
