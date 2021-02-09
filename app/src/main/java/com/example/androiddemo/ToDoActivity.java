@@ -32,18 +32,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //ToDoListAdapter.OnItemClickListener
+public class ToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener {
+
     private DatabaseHelper databaseHelper;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
-    //ToDoListAdapter mAdapter;
+    ToDoListAdapter mAdapter;
     String user;
 
-    //private List<ToDo> mTodos;
+    private List<ToDo> mTodos;
 
 
     @Override
@@ -83,22 +83,22 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         EditText todoDate = findViewById(R.id.editText_Date);
         TextView notodo = findViewById(R.id.text_notodo);
         Button addButton = findViewById(R.id.button_Add);
-      //  RecyclerView todoListView = findViewById(R.id.todoListView);
+        RecyclerView todoListView = findViewById(R.id.todoListView);
 
-      //  todoListView.setLayoutManager(new LinearLayoutManager(this));
+        todoListView.setLayoutManager(new LinearLayoutManager(this));
 
 
-       // mTodos = new ArrayList<>();
-        //mTodos.clear();
-        //mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-        //mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
-        //if(mAdapter.getItemCount()>0){
-          //  notodo.setVisibility(View.INVISIBLE);
-            //mTodos.clear();
-            //mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+        mTodos = new ArrayList<>();
+        mTodos.clear();
+        mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+        mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
+        if(mAdapter.getItemCount()>0){
+            notodo.setVisibility(View.INVISIBLE);
+            mTodos.clear();
+            mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
             //attach adapter to activity's view (add card to recycler view)
-            //todoListView.setAdapter(mAdapter);
-        //}
+            todoListView.setAdapter(mAdapter);
+        }
 
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -144,13 +144,13 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 todo.setTodoUserID(databaseHelper.getIDfromUsername(user));
 
                 databaseHelper.addToDo(todo);
-               // mAdapter.notifyDataSetChanged();
-               // mTodos.clear();
-               // mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+                mAdapter.notifyDataSetChanged();
+                mTodos.clear();
+                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
                 //list all to-do
-               // notodo.setVisibility(View.GONE);
-               // mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
-               // todoListView.setAdapter(mAdapter);
+                notodo.setVisibility(View.GONE);
+                mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
+                todoListView.setAdapter(mAdapter);
 
             }
         });
@@ -245,7 +245,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
- /*   @Override
+    @Override
     public void onItemClick(int position) {
 
     }
@@ -255,7 +255,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         //TODO add edit to-do func
     }
 
-  /*  @Override
+    @Override
     public void onDeleteClick(int position) {
         //get selected memory's position and key
         final ToDo selectedItem = mTodos.get(position);
@@ -280,6 +280,6 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
 
         alert.show();
 
-    }*/
+    }
 
 }

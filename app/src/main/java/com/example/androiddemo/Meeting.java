@@ -44,7 +44,7 @@ public class Meeting {
         return meetingDate;
     }
 
-    public void setMeetingDate(String meetingDateDate) {
+    public void setMeetingDate(String meetingDate) {
         this.meetingDate = meetingDate;
     }
 

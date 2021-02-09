@@ -149,18 +149,21 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
 
             case R.id.nav_home: {
                 Intent profileIntent = new Intent(CreateMeetingsActivity.this, MainActivity.class);
+                profileIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
             }
             case R.id.nav_calendar: {
                 Intent calendarIntent = new Intent(CreateMeetingsActivity.this, CalendarActivity.class);
+                calendarIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_todo: {
                 Intent todoIntent = new Intent(CreateMeetingsActivity.this, ToDoActivity.class);
+                todoIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(todoIntent);
                 break;
@@ -168,6 +171,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
 
             case R.id.nav_profile: {
                 Intent profileIntent = new Intent(CreateMeetingsActivity.this, ProfileActivity.class);
+                profileIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
@@ -186,6 +190,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
             }
             case R.id.nav_settings: {
                 Intent settingsIntent = new Intent(CreateMeetingsActivity.this, SettingsActivity.class);
+                settingsIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(settingsIntent);
                 break;

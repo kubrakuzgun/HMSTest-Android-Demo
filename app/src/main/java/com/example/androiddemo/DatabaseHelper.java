@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 24;
     // Database Name
     private static final String DATABASE_NAME = "DemoDatabase.db";
     // User table name
@@ -467,6 +467,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Meeting> getMeetingByDate(Integer currentuser_id, String formattedCurrentDate) {
         // array of columns to fetch
         String[] columns = {
+                COLUMN_MEETING_ID,
                 COLUMN_MEETING_TITLE,
                 COLUMN_CURRENT_USER_ID,
                 COLUMN_MEETING_DATE,
