@@ -104,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
             }
             case R.id.nav_meetings: {
-                Intent notesIntent = new Intent(ProfileActivity.this, MeetingsActivity.class);
+                Intent notesIntent = new Intent(ProfileActivity.this, CreateMeetingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(notesIntent);
                 break;

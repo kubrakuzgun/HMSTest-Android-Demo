@@ -107,20 +107,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.132"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/today" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_titleToDo" />
 
         <TextView
-            android:id="@+id/today"
+            android:id="@+id/txt_titleToDo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Today's TODOs:"
-            android:textAllCaps="true"
+            android:text="To Do"
+            android:textAllCaps="false"
             android:textColor="#2C0313"
-            android:textSize="18sp"
+            android:textSize="35sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.147"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_image" />
 
@@ -134,10 +134,106 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.075"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/today" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_titleToDo" />
+        <ImageButton
+            app:layout_constraintTop_toBottomOf="@id/view_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.08"
+            android:gravity="start|left"
+            android:id="@+id/btn_mainEditTodo"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_toRightOf="@id/titleMeeting"
+            android:background="@drawable/edittext_transparent"
+            android:src="@drawable/editicon" />
+
+
+        <ImageButton
+            app:layout_constraintTop_toBottomOf="@id/view_image"
+            android:id="@+id/btn_mainAddToDo"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.08"
+            android:gravity="start|left"
+            android:background="@drawable/edittext_transparent"
+            android:src="@drawable/addicon" />
+        <TextView
+            android:id="@+id/titleMeeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/todaysTodoListView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.050"
+            android:gravity="start"
+            android:text="Meetings"
+            android:textColor="#2C0313"
+            android:textSize="35sp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            app:layout_constraintTop_toBottomOf="@id/todaysTodoListView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.050"
+            android:gravity="start|left"
+            android:id="@+id/btn_mainEditMeeting"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_toRightOf="@id/titleMeeting"
+            android:background="@drawable/edittext_transparent"
+            android:src="@drawable/editicon" />
+
+
+        <ImageButton
+            app:layout_constraintTop_toBottomOf="@id/todaysTodoListView"
+            android:id="@+id/btn_mainAddMeeting"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.050"
+            android:gravity="start|left"
+            android:background="@drawable/edittext_transparent"
+            android:src="@drawable/addicon" />
+
+        <TextView
+            android:id="@+id/text_nomeeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleMeeting"
+            app:layout_constraintTop_toBottomOf="@id/titleMeeting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.050"
+            android:text="No meeting scheduled for today" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/todaysMeetingListView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.132"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleMeeting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -148,3 +244,4 @@
         app:menu="@menu/main_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
+

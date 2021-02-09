@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseHelper databaseHelper;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -36,31 +36,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String user;
 
     ToDoListAdapter mAdapter;
+    MeetingListAdapter meetingAdapter;
     private List<ToDo> mTodos;
+    private List<Meeting> mMeetings;
+    //User Interfaces:
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Bundle extras = getIntent().getExtras();
-
-        user= extras.getString("username");
-
+        user = extras.getString("username");
         Log.d("main username", user);
 
-        databaseHelper = new DatabaseHelper(MainActivity.this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         TextView textDD = findViewById(R.id.text_dd);
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
         RecyclerView todaysTodoList = findViewById(R.id.todaysTodoListView);
-        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
         TextView textNotodo = findViewById(R.id.text_notodo);
+        TextView textNoMeeting = findViewById(R.id.text_nomeeting);
+        //RecyclerView todaysMeetingList = findViewById(R.id.todaysMeetingListView);
 
-
+        ///
+        databaseHelper = new DatabaseHelper(MainActivity.this);
+        ///
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        ///
+        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
+        ////
         editor = preferences.edit();
-        editor.putBoolean("isLoggedIn",true);
+        editor.putBoolean("isLoggedIn", true);
         editor.apply();
 
         //display current date
@@ -80,11 +86,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String formattedDate = sdf.format(currentDateTime.getTime());
         Log.d("formatted date", formattedDate);
 
+        //List To do
         mTodos = new ArrayList<>();
         mTodos.clear();
         mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
         mAdapter = new ToDoListAdapter(MainActivity.this, mTodos);
-        if(mAdapter.getItemCount()>0){
+        if (mAdapter.getItemCount() > 0) {
             textNotodo.setVisibility(View.INVISIBLE);
             mTodos.clear();
             mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
@@ -92,6 +99,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             todaysTodoList.setAdapter(mAdapter);
         }
 
+        //List Meeting
+        mMeetings = new ArrayList<>();
+        mMeetings.clear();
+        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+        meetingAdapter = new MeetingListAdapter(MainActivity.this, mMeetings);
+        if (meetingAdapter.getItemCount() > 0) {
+            textNoMeeting.setVisibility((View.INVISIBLE));
+            mMeetings.clear();
+            mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user),formattedDate));
+          //  todaysMeetingList.setAdapter(meetingAdapter);
+        }
 
 
         //side menu
@@ -118,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 blurView.setVisibility(View.VISIBLE);
                 super.onDrawerOpened(drawerView);
             }
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 blurView.setVisibility(View.INVISIBLE);
@@ -146,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -154,28 +174,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_calendar: {
                 Intent calendarIntent = new Intent(MainActivity.this, CalendarActivity.class);
                 calendarIntent.putExtra("username", user);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_todo: {
                 Intent todoIntent = new Intent(MainActivity.this, ToDoActivity.class);
                 todoIntent.putExtra("username", user);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(todoIntent);
                 break;
             }
             case R.id.nav_meetings: {
-                Intent meetingsIntent = new Intent(MainActivity.this, MeetingsActivity.class);
+                Intent meetingsIntent = new Intent(MainActivity.this, CreateMeetingsActivity.class);
                 meetingsIntent.putExtra("username", user);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(meetingsIntent);
                 break;
             }
             case R.id.nav_profile: {
                 Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
                 profileIntent.putExtra("username", user);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
             }
@@ -184,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.clear();
                 editor.apply();
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(loginIntent);
                 break;
             }
@@ -192,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.clear();
                 editor.apply();
                 Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(settingsIntent);
                 break;
             }
@@ -204,14 +224,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
-    public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
+        } else {
             finishAffinity();
         }
     }

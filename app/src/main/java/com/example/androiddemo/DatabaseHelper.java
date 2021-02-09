@@ -19,6 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USER = "user";
     // To-do table name
     private static final String TABLE_TODO = "todo";
+    //Meeting Table name
+    private static final String TABLE_MEETING = "todo";
+
     // User Table Columns names
     private static final String COLUMN_USER_ID = "user_id";
     private static final String COLUMN_USER_USERNAME = "user_usernamename";
@@ -31,6 +34,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TODO_DESC = "todo_desc";
     private static final String COLUMN_TODO_DATE = "todo_date";
     private static final String COLUMN_TODO_STATUS = "todo_status";
+
+    //Meeting Table Column names
+    private static final String COLUMN_MEETING_ID = "meeting_id";
+    private static final String COLUMN_MEETING_TITLE = "meeting_title";
+    private static final String COLUMN_MEETING_DATE = "meeting_date";
+    private static final String COLUMN_MEETING_START = "meeting_start";
+    private static final String COLUMN_MEETING_END = "meeting_end";
+
     // create table sql query
     private String CREATE_USER_TABLE= "CREATE TABLE " + TABLE_USER+ "("
             + COLUMN_USER_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_USERNAME+ " TEXT UNIQUE,"
@@ -45,6 +56,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // drop table sql query
     private String DROP_TODO_TABLE= "DROP TABLE IF EXISTS " + TABLE_USER;
 
+    //create Meeting table
+    private String CREATE_MEETING_TABLE= "CREATE TABLE " + TABLE_MEETING+ "("
+            + COLUMN_MEETING_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MEETING_TITLE+ " TEXT," + COLUMN_CURRENT_USER_ID+ " INTEGER," + COLUMN_MEETING_DATE+ " TEXT,"
+            + COLUMN_MEETING_START+ " TEXT," + COLUMN_MEETING_END+ " TEXT" + ")";
+    //drop table -meeting
+    private String DROP_MEETING_TABLE= "DROP TABLE IF EXISTS " + TABLE_USER;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,12 +74,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("user table created", "true");
         db.execSQL(CREATE_TODO_TABLE);
         Log.d("todo table created", "true");
+        db.execSQL(CREATE_MEETING_TABLE);
+        Log.d("meeting table created", "true");
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Drop User Table if exist
         db.execSQL(DROP_USER_TABLE);
         db.execSQL(DROP_TODO_TABLE);
+        db.execSQL(DROP_MEETING_TABLE);
         // Create tables again
         onCreate(db);
     }
@@ -403,6 +424,90 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         // return to-do list
         return todoList;
+    }
+//Adding a Meeting Record
+    public void addMeeting(Meeting meeting) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TODO_TITLE, meeting.getMeetingTitle());
+        values.put(COLUMN_MEETING_DATE, meeting.getMeetingDate());
+        values.put(COLUMN_MEETING_START, meeting.getMeetingStart());
+        values.put(COLUMN_CURRENT_USER_ID, meeting.getMeeetingUserID());
+        // Inserting Row
+        db.insert(TABLE_MEETING, null, values);
+        Log.d("meeting table", "meeting item added");
+        Log.d("meeting ", "user id: " + meeting.getMeeetingUserID());
+        db.close();
+    }
+    //Update meeting
+    public void updateMeeting(Meeting meeting) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_MEETING_TITLE, meeting.getMeetingTitle());
+        values.put(COLUMN_MEETING_DATE, meeting.getMeetingDate());
+        values.put(COLUMN_MEETING_START, meeting.getMeetingStart());
+        values.put(COLUMN_MEETING_END, meeting.getMeetingEnd());
+        // updating row
+        db.update(TABLE_MEETING, values, COLUMN_MEETING_ID + " = ?",
+                new String[]{String.valueOf(meeting.getMeetingID())});
+        db.close();
+    }
+    // delete meeting record
+    public void deleteMeeting(Meeting meeting) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // delete user record by id
+        db.delete(TABLE_MEETING, COLUMN_MEETING_ID + " = ?",
+                new String[]{String.valueOf(meeting.getMeetingID())});
+        db.close();
+    }
+
+    public List<Meeting> getMeetingByDate(Integer currentuser_id, String formattedCurrentDate) {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_MEETING_TITLE,
+                COLUMN_CURRENT_USER_ID,
+                COLUMN_MEETING_DATE,
+                COLUMN_MEETING_START,
+                COLUMN_MEETING_END,
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_MEETING_ID + " ASC";
+        List<Meeting> meetingList = new ArrayList<Meeting>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_CURRENT_USER_ID + " = ?" + " AND " + COLUMN_MEETING_DATE + " = ?";
+
+        // selection arguments
+        String[] selectionArgs = {currentuser_id.toString(), formattedCurrentDate};
+
+        // query the to-do table
+        Cursor cursor = db.query(TABLE_MEETING, //Table to query
+                columns,    //columns to return
+                selection,        //columns for the WHERE clause
+                selectionArgs,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Meeting meeting = new Meeting();
+                meeting.setMeetingID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_MEETING_ID))));
+                meeting.setMeeetingUserID(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_CURRENT_USER_ID))));
+                meeting.setMeetingTitle(cursor.getString(cursor.getColumnIndex(COLUMN_MEETING_TITLE)));
+                meeting.setMeetingDate(cursor.getString(cursor.getColumnIndex(COLUMN_MEETING_DATE)));
+                meeting.setMeetingStart(cursor.getString(cursor.getColumnIndex(COLUMN_MEETING_START)));
+                meeting.setMeetingEnd(cursor.getString(cursor.getColumnIndex(COLUMN_MEETING_END)));
+                // Adding to-do record to list
+                meetingList.add(meeting);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return to-do list
+        return meetingList;
     }
 
 }

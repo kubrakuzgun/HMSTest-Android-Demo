@@ -20,11 +20,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -211,7 +209,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_meetings: {
-                Intent notesIntent = new Intent(ToDoActivity.this, MeetingsActivity.class);
+                Intent notesIntent = new Intent(ToDoActivity.this, CreateMeetingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(notesIntent);
                 break;

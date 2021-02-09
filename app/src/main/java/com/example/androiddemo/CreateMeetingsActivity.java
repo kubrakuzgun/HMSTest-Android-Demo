@@ -16,7 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class MeetingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CreateMeetingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseHelper databaseHelper;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -28,7 +28,7 @@ public class MeetingsActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        databaseHelper = new DatabaseHelper(MeetingsActivity.this);
+        databaseHelper = new DatabaseHelper(CreateMeetingsActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
@@ -82,26 +82,26 @@ public class MeetingsActivity extends AppCompatActivity implements NavigationVie
         switch (item.getItemId()) {
 
             case R.id.nav_home: {
-                Intent profileIntent = new Intent(MeetingsActivity.this, MainActivity.class);
+                Intent profileIntent = new Intent(CreateMeetingsActivity.this, MainActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
             }
             case R.id.nav_calendar: {
-                Intent calendarIntent = new Intent(MeetingsActivity.this, CalendarActivity.class);
+                Intent calendarIntent = new Intent(CreateMeetingsActivity.this, CalendarActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_todo: {
-                Intent todoIntent = new Intent(MeetingsActivity.this, ToDoActivity.class);
+                Intent todoIntent = new Intent(CreateMeetingsActivity.this, ToDoActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(todoIntent);
                 break;
             }
 
             case R.id.nav_profile: {
-                Intent profileIntent = new Intent(MeetingsActivity.this, ProfileActivity.class);
+                Intent profileIntent = new Intent(CreateMeetingsActivity.this, ProfileActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
@@ -113,13 +113,13 @@ public class MeetingsActivity extends AppCompatActivity implements NavigationVie
                 editor.apply();
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(MeetingsActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(CreateMeetingsActivity.this, LoginActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(loginIntent);
                 break;
             }
             case R.id.nav_settings: {
-                Intent settingsIntent = new Intent(MeetingsActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(CreateMeetingsActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(settingsIntent);
                 break;

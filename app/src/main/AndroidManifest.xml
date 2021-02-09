@@ -15,7 +15,7 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
         <activity
-            android:name=".MeetingsActivity"
+            android:name=".CreateMeetingsActivity"
             android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
         <activity
             android:name=".ToDoActivity"
