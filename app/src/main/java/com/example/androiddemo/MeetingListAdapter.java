@@ -33,7 +33,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
     @NonNull
     @Override
     public MeetingListAdapter.MeetingListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.todolist_item, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.meetinglist_item, parent, false);
         return new MeetingListHolder(v);
     }
 

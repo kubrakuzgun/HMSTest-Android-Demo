@@ -26,7 +26,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes);
+        setContentView(R.layout.activity_create_meetings);
 
         databaseHelper = new DatabaseHelper(CreateMeetingsActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

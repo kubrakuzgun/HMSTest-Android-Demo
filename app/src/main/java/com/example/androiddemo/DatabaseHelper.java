@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // To-do table name
     private static final String TABLE_TODO = "todo";
     //Meeting Table name
-    private static final String TABLE_MEETING = "todo";
+    private static final String TABLE_MEETING = "meeting";
 
     // User Table Columns names
     private static final String COLUMN_USER_ID = "user_id";
@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_MEETING_END = "meeting_end";
 
     // create table sql query
-    private String CREATE_USER_TABLE= "CREATE TABLE " + TABLE_USER+ "("
+     private String CREATE_USER_TABLE= "CREATE TABLE " + TABLE_USER+ "("
             + COLUMN_USER_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_USERNAME+ " TEXT UNIQUE,"
             + COLUMN_USER_EMAIL+ " TEXT UNIQUE," + COLUMN_USER_PASSWORD+ " TEXT" + ")";
     // drop table sql query
