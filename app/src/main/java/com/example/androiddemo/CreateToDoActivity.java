@@ -12,8 +12,11 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +26,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CreateToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener {
     private DrawerLayout drawerLayout;
@@ -66,13 +72,25 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
-
         View headerView = navView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.header_username);
         TextView navUserDetail = headerView.findViewById(R.id.header_userdetail);
+        CircleImageView navProfilepicture = headerView.findViewById(R.id.header_pp);
 
         navUsername.setText(user);
         navUserDetail.setText("Level 1");
+
+        if(preferences.contains("profilePicture"))
+        {
+
+            String encodedImage = preferences.getString("profilePicture",null);
+
+            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+
+            Bitmap bitmapImage = BitmapFactory.decodeByteArray(b, 0, b.length);
+
+            navProfilepicture.setImageBitmap(bitmapImage);
+        }
 
         blurView = findViewById(R.id.view_blurbackground4);
         blurView.setVisibility(View.INVISIBLE);
@@ -151,6 +169,8 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 notodo.setVisibility(View.GONE);
                 mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
                 todoListView.setAdapter(mAdapter);
+
+                Toast.makeText(CreateToDoActivity.this, "TODO CREATED", Toast.LENGTH_LONG).show();
 
             }
         });

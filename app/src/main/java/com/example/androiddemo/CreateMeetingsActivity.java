@@ -9,8 +9,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +25,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CreateMeetingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,9 +74,23 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
         View headerView = navView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.header_username);
         TextView navUserDetail = headerView.findViewById(R.id.header_userdetail);
+        CircleImageView navProfilepicture = headerView.findViewById(R.id.header_pp);
 
         navUsername.setText(user);
         navUserDetail.setText("Level 1");
+
+        if(preferences.contains("profilePicture"))
+        {
+
+            String encodedImage = preferences.getString("profilePicture",null);
+
+            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+
+            Bitmap bitmapImage = BitmapFactory.decodeByteArray(b, 0, b.length);
+
+            navProfilepicture.setImageBitmap(bitmapImage);
+        }
+
 
         blurView = findViewById(R.id.view_blurbackground5);
         blurView.setVisibility(View.INVISIBLE);
@@ -94,6 +114,8 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
 
                 meeting.setMeeetingUserID(databaseHelper.getIDfromUsername(user));
                 databaseHelper.addMeeting(meeting);
+
+                Toast.makeText(CreateMeetingsActivity.this, "MEETING CREATED", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -140,12 +162,13 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
         switch (item.getItemId()) {
 
             case R.id.nav_home: {
-                Intent profileIntent = new Intent(CreateMeetingsActivity.this, MainActivity.class);
-                profileIntent.putExtra("username", user);
+                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+                homeIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                startActivity(profileIntent);
+                startActivity(homeIntent);
                 break;
             }
+
             case R.id.nav_calendar: {
                 Intent calendarIntent = new Intent(CreateMeetingsActivity.this, CalendarActivity.class);
                 calendarIntent.putExtra("username", user);

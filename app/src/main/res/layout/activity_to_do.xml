@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
+    android:background="#FBF6F6"
     tools:context=".CreateToDoActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,11 +33,12 @@
             android:id="@+id/editText_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="36dp"
             android:ems="10"
             android:hint="Title"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_addtodo" />
 
@@ -44,11 +46,12 @@
             android:id="@+id/editText_Desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="12dp"
             android:ems="10"
             android:hint="Description"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_Title" />
 
@@ -56,14 +59,15 @@
             android:id="@+id/editText_Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:ems="10"
-            android:hint="Date"
-            android:inputType="date"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:editable="false"
+            android:ems="10"
             android:focusable="false"
+            android:hint="Date"
+            android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_Desc" />
 
@@ -71,11 +75,12 @@
             android:id="@+id/button_Add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/custombutton_1"
             android:selectAllOnFocus="true"
             android:text="ADD"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_Date" />
 
@@ -92,7 +97,7 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_Add"
-            app:layout_constraintVertical_bias="0.091" />
+            app:layout_constraintVertical_bias="0.074" />
 
         <TextView
             android:id="@+id/text_notodo"
@@ -107,18 +112,22 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_todolist"
-            app:layout_constraintVertical_bias="0.081" />
+            app:layout_constraintVertical_bias="0.033" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todoListView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="310dp"
+            app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_todolist"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintVertical_bias="0.255" />
+            app:layout_constraintVertical_bias="0.053" />
 
         <View
             android:id="@+id/view_blurbackground4"
@@ -135,6 +144,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -143,6 +153,5 @@
         android:background="#F1EBEB"
         app:headerLayout="@layout/mainmenu_header"
         app:menu="@menu/main_menu" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

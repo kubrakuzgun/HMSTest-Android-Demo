@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -130,9 +137,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.header_username);
         TextView navUserDetail = headerView.findViewById(R.id.header_userdetail);
+        CircleImageView navProfilepicture = headerView.findViewById(R.id.header_pp);
 
         navUsername.setText(user);
         navUserDetail.setText("Level 1");
+
+        if(preferences.contains("profilePicture"))
+        {
+
+            String encodedImage = preferences.getString("profilePicture",null);
+
+            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+
+            Bitmap bitmapImage = BitmapFactory.decodeByteArray(b, 0, b.length);
+
+            navProfilepicture.setImageBitmap(bitmapImage);
+        }
+
 
 
         blurView = findViewById(R.id.view_blurbackground);
@@ -240,5 +261,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finishAffinity();
         }
     }
+
+    public void addToDo(View view){
+        Intent todoIntent = new Intent(MainActivity.this, CreateToDoActivity.class);
+        todoIntent.putExtra("username", user);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        startActivity(todoIntent);
+    }
+
+    public void addMeeting(View view){
+        Intent meetingsIntent = new Intent(MainActivity.this, CreateMeetingsActivity.class);
+        meetingsIntent.putExtra("username", user);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        startActivity(meetingsIntent);
+    }
+
 
 }
