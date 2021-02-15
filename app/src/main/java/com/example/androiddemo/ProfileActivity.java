@@ -98,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
             }
             case R.id.nav_todo: {
-                Intent todoIntent = new Intent(ProfileActivity.this, ToDoActivity.class);
+                Intent todoIntent = new Intent(ProfileActivity.this, CreateToDoActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(todoIntent);
                 break;

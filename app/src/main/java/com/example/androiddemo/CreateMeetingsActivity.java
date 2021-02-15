@@ -4,13 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -29,23 +27,22 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 
 public class CreateMeetingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseHelper databaseHelper;
+
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
+//Define DataBase Helper object and username string
+    private DatabaseHelper databaseHelper;
+    String user;
+    //design tools definition:
     EditText edt_end, edt_start, edt_title, edt_date;
     ImageButton btn_StartEdit, btn_EndEdit, btn_DateEdit;
     Button btn_OK, btn_Cancel;
-    String user;
-   // MeetingListAdapter meetingAdapter;
-    //private List<Meeting> mMeetings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +94,6 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
 
                 meeting.setMeeetingUserID(databaseHelper.getIDfromUsername(user));
                 databaseHelper.addMeeting(meeting);
-                //meetingAdapter.notifyDataSetChanged();
-                //mMeetings.clear();
-                //mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user),edt_date.getText().toString()));
-                //list all to-do
-                //meetingAdapter = new MeetingListAdapter(CreateMeetingsActivity.this, mMeetings);
 
             }
         });
@@ -162,7 +154,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
                 break;
             }
             case R.id.nav_todo: {
-                Intent todoIntent = new Intent(CreateMeetingsActivity.this, ToDoActivity.class);
+                Intent todoIntent = new Intent(CreateMeetingsActivity.this, CreateToDoActivity.class);
                 todoIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(todoIntent);

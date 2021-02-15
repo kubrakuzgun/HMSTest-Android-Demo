@@ -18,9 +18,10 @@
             android:name=".CreateMeetingsActivity"
             android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
         <activity
-            android:name=".ToDoActivity"
+            android:name=".CreateToDoActivity"
             android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
-        <activity android:name=".CalendarActivity" />
+        <activity android:name=".CalendarActivity"
+            android:theme="@style/Theme.AndroidDemo.NoActionBar"/>
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/Theme.AndroidDemo.NoActionBar" />

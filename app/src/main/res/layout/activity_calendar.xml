@@ -1,10 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarActivity">
+    tools:context=".CalendarActivity"
+    android:id="@+id/drawer_layout"
+    tools:openDrawer="start"
+    android:background="#FBF6F6">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/currentTodoListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintHeight_max="230dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_calTitleToDo" />
+
+    <TextView
+        android:id="@+id/txt_calTitleToDo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Do"
+        android:textAllCaps="false"
+        android:textColor="#2C0313"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarView" />
+
+    <TextView
+        android:id="@+id/text_calNotodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="You don't have any TODOs today."
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_calTitleToDo" />
+    <ImageButton
+        app:layout_constraintTop_toBottomOf="@id/calendarView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:gravity="start|left"
+        android:id="@+id/btn_calEditTodo"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:layout_toRightOf="@id/txt_calTitleMeeting"
+        android:background="@drawable/edittext_transparent"
+        android:src="@drawable/editicon" />
+
+
+    <ImageButton
+        app:layout_constraintTop_toBottomOf="@id/calendarView"
+        android:id="@+id/btn_calAddToDo"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:gravity="start|left"
+        android:background="@drawable/edittext_transparent"
+        android:src="@drawable/addicon" />
+    <TextView
+        android:id="@+id/txt_calTitleMeeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/currentTodoListView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.050"
+        android:gravity="start"
+        android:text="Meetings"
+        android:textColor="#2C0313"
+        android:textSize="35sp"
+        android:textStyle="bold"/>
+
+    <ImageButton
+        app:layout_constraintTop_toBottomOf="@id/currentTodoListView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.050"
+        android:gravity="start|left"
+        android:id="@+id/btn_calEditMeeting"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:layout_toRightOf="@id/txt_calTitleMeeting"
+        android:background="@drawable/edittext_transparent"
+        android:src="@drawable/editicon" />
+
+
+    <ImageButton
+        app:layout_constraintTop_toBottomOf="@id/currentTodoListView"
+        android:id="@+id/btn_calAddMeeting"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.050"
+        android:gravity="start|left"
+        android:background="@drawable/edittext_transparent"
+        android:src="@drawable/addicon" />
+
+    <TextView
+        android:id="@+id/text_calNoMeeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_calTitleMeeting"
+        app:layout_constraintTop_toBottomOf="@id/txt_calTitleMeeting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.050"
+        android:text="No meeting scheduled for today" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/currentMeetingListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintHeight_max="230dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_calTitleMeeting" />
+
+
 
 
     <View
@@ -18,29 +173,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="invisible" />
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:context=".MainActivity"
-        tools:openDrawer="start">
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#F1EBEB"
-            app:headerLayout="@layout/mainmenu_header"
-            app:menu="@menu/main_menu" />
-
-    </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#F1EBEB"
+        app:headerLayout="@layout/mainmenu_header"
+        app:menu="@menu/main_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>

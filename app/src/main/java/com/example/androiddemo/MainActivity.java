@@ -27,29 +27,36 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DatabaseHelper databaseHelper;
+
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
-    String user;
 
+    //Define string to keep bundle of username:
+    String user;
+    //Define DataBaseHelper:
+    private DatabaseHelper databaseHelper;
+    //List Adapters
     ToDoListAdapter mAdapter;
     MeetingListAdapter meetingAdapter;
+    //List Of records
     private List<ToDo> mTodos;
     private List<Meeting> mMeetings;
-    //User Interfaces:
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Get data from Bundle object
         Bundle extras = getIntent().getExtras();
         user = extras.getString("username");
         Log.d("main username", user);
 
+        //Define the design tools and assigned the corresponding id to them
         TextView textDD = findViewById(R.id.text_dd);
         TextView textMonth = findViewById(R.id.text_month);
         TextView textDay = findViewById(R.id.text_day);
@@ -58,17 +65,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView textNoMeeting = findViewById(R.id.text_nomeeting);
         RecyclerView todaysMeetingList = findViewById(R.id.todaysMeetingListView);
 
-        ///
+        ///construct an object for DatabaseHelper class. (set the current activity as context argument)
         databaseHelper = new DatabaseHelper(MainActivity.this);
         ///
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        ///
-        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
-        todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
-        ////
         editor = preferences.edit();
         editor.putBoolean("isLoggedIn", true);
         editor.apply();
+        ///Locate the lists to this activity layout.
+        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
+        todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
+
 
         //display current date
 
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_todo: {
-                Intent todoIntent = new Intent(MainActivity.this, ToDoActivity.class);
+                Intent todoIntent = new Intent(MainActivity.this, CreateToDoActivity.class);
                 todoIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(todoIntent);
