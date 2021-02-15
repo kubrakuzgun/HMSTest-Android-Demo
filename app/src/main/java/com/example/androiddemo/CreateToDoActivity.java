@@ -12,15 +12,17 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,16 +36,19 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener {
-    private DatabaseHelper databaseHelper;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class CreateToDoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener {
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
-    ToDoListAdapter mAdapter;
+
+    private DatabaseHelper databaseHelper;
     String user;
 
+    ToDoListAdapter mAdapter;
     private List<ToDo> mTodos;
 
 
@@ -57,7 +62,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         Log.d("todo username", user);
 
 
-        databaseHelper = new DatabaseHelper(ToDoActivity.this);
+        databaseHelper = new DatabaseHelper(CreateToDoActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //side menu
@@ -67,13 +72,25 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
-
         View headerView = navView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.header_username);
         TextView navUserDetail = headerView.findViewById(R.id.header_userdetail);
+        CircleImageView navProfilepicture = headerView.findViewById(R.id.header_pp);
 
         navUsername.setText(user);
         navUserDetail.setText("Level 1");
+
+        if(preferences.contains("profilePicture"))
+        {
+
+            String encodedImage = preferences.getString("profilePicture",null);
+
+            byte[] b = Base64.decode(encodedImage, Base64.DEFAULT);
+
+            Bitmap bitmapImage = BitmapFactory.decodeByteArray(b, 0, b.length);
+
+            navProfilepicture.setImageBitmap(bitmapImage);
+        }
 
         blurView = findViewById(R.id.view_blurbackground4);
         blurView.setVisibility(View.INVISIBLE);
@@ -92,7 +109,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         mTodos = new ArrayList<>();
         mTodos.clear();
         mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-        mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
+        mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
         if(mAdapter.getItemCount()>0){
             notodo.setVisibility(View.INVISIBLE);
             mTodos.clear();
@@ -123,7 +140,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(ToDoActivity.this, datedialog, myCalendar
+                new DatePickerDialog(CreateToDoActivity.this, datedialog, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -150,8 +167,10 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
                 //list all to-do
                 notodo.setVisibility(View.GONE);
-                mAdapter = new ToDoListAdapter(ToDoActivity.this, mTodos);
+                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
                 todoListView.setAdapter(mAdapter);
+
+                Toast.makeText(CreateToDoActivity.this, "TODO CREATED", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -198,26 +217,26 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_home: {
-                Intent homeIntent = new Intent(ToDoActivity.this, MainActivity.class);
+                Intent homeIntent = new Intent(CreateToDoActivity.this, MainActivity.class);
                 homeIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(homeIntent);
                 break;
             }
             case R.id.nav_calendar: {
-                Intent calendarIntent = new Intent(ToDoActivity.this, CalendarActivity.class);
+                Intent calendarIntent = new Intent(CreateToDoActivity.this, CalendarActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
             }
             case R.id.nav_meetings: {
-                Intent notesIntent = new Intent(ToDoActivity.this, MeetingsActivity.class);
+                Intent notesIntent = new Intent(CreateToDoActivity.this, CreateMeetingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(notesIntent);
                 break;
             }
             case R.id.nav_profile: {
-                Intent profileIntent = new Intent(ToDoActivity.this, ProfileActivity.class);
+                Intent profileIntent = new Intent(CreateToDoActivity.this, ProfileActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(profileIntent);
                 break;
@@ -229,13 +248,13 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
                 editor.apply();
                 editor.clear();
                 editor.apply();
-                Intent loginIntent = new Intent(ToDoActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(CreateToDoActivity.this, LoginActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(loginIntent);
                 break;
             }
             case R.id.nav_settings: {
-                Intent settingsIntent = new Intent(ToDoActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(CreateToDoActivity.this, SettingsActivity.class);
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 startActivity(settingsIntent);
                 break;
@@ -262,7 +281,7 @@ public class ToDoActivity extends AppCompatActivity implements NavigationView.On
         final ToDo selectedItem = mTodos.get(position);
 
         //create alert to confirm delete
-        AlertDialog.Builder alert = new AlertDialog.Builder(ToDoActivity.this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(CreateToDoActivity.this);
         alert.setMessage("Do you want to delete this TODO?");
 
         alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {

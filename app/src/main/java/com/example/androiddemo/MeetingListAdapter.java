@@ -1,9 +1,7 @@
 package com.example.androiddemo;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,83 +16,60 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.TodoListHolder>
+public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.MeetingListHolder>
 {
     private Context mContext;
     private DatabaseHelper databaseHelper;
-    private List<ToDo> todos;
-    private OnItemClickListener mListener;
+    private List<Meeting> meetings;
+    private MeetingListAdapter.OnItemClickListener mListener;
 
     //Constructor
-    public ToDoListAdapter(Context context, List<ToDo> alltodo) {
+    public MeetingListAdapter(Context context, List<Meeting> allmeeting) {
         mContext = context;
-        todos = alltodo;
+        meetings = allmeeting;
         databaseHelper = new DatabaseHelper(mContext);
     }
 
     @NonNull
     @Override
-    public ToDoListAdapter.TodoListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.todolist_item, parent, false);
-        return new TodoListHolder(v);
+    public MeetingListAdapter.MeetingListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.meetinglist_item, parent, false);
+        return new MeetingListHolder(v);
     }
 
+
+
     @Override
-    public void onBindViewHolder(@NonNull ToDoListAdapter.TodoListHolder holder, int position) {
-        ToDo currentTodo = todos.get(position);
+    public void onBindViewHolder(@NonNull MeetingListAdapter.MeetingListHolder holder, int position) {
+        Meeting currentMeeting = meetings.get(position);
 
-        holder.textTitle.setText(currentTodo.getTodoTitle());
-        holder.textDesc.setText("Description: " +currentTodo.getTodoDesc());
-        holder.textDate.setText("Date: " +currentTodo.getTodoDate());
-        holder.textStat.setText("Status: " +currentTodo.getTodoStatus());
-        if(currentTodo.getTodoStatus().equals("Complete")){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    holder.checkBoxStat.setChecked(true);
-                }
-            }, 200);
-        }
-
-        holder.checkBoxStat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                boolean isChecked = ((CheckBox)arg0).isChecked();
-                if (isChecked){
-                    currentTodo.setTodoStatus("Complete");
-                }else{
-                    currentTodo.setTodoStatus("Incomplete");
-                }
-                databaseHelper.updateToDo(currentTodo);
-                holder.textStat.setText("Status: " +currentTodo.getTodoStatus());
-            }
-        });
+        holder.textTitle.setText(currentMeeting.getMeetingTitle());
+        holder.textStart.setText("Start: " +currentMeeting.getMeetingStart());
+        holder.textDate.setText("Date: " +currentMeeting.getMeetingDate());
+        holder.textEnd.setText("End: " +currentMeeting.getMeetingEnd());
 
     }
 
 
     @Override
     public int getItemCount() {
-        return todos.size();
+        return meetings.size();
     }
 
     //layout template
-    public class TodoListHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+    public class MeetingListHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
         public TextView textTitle;
         public TextView textID;
-        public TextView textDesc;
+        public TextView textStart;
         public TextView textDate;
-        public TextView textStat;
-        public CheckBox checkBoxStat;
-
+        public TextView textEnd;
         //create an ImageView to insert memory photo and TextViews to insert memory info(people, date, place)
-        public TodoListHolder(View itemView) {
+        public MeetingListHolder(View itemView) {
             super(itemView);
-            textTitle = itemView.findViewById(R.id.text_itemtitle);
-            textDesc = itemView.findViewById(R.id.text_itemdesc);
-            textDate = itemView.findViewById(R.id.text_itemdate);
-            textStat = itemView.findViewById(R.id.text_itemstat);
-            checkBoxStat = itemView.findViewById(R.id.cb_status);
+            textTitle = itemView.findViewById(R.id.text_meetingtitle);
+            textStart = itemView.findViewById(R.id.text_meetingstart);
+            textDate = itemView.findViewById(R.id.text_meetingdate);
+            textEnd = itemView.findViewById(R.id.text_meetingend);
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -164,8 +138,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.TodoLi
     }
 
     //set item click listener
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
+    public void setOnItemClickListener(ToDoListAdapter.OnItemClickListener listener) {
+        mListener = (OnItemClickListener) listener;
     }
 
 }

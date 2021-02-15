@@ -10,25 +10,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:background="#F0FBECEC">
+        android:background="#1E6A797E">
 
-        <CheckBox
-            android:id="@+id/cb_status"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="10dp">
 
             <TextView
-                android:id="@+id/text_itemtitle"
+                android:id="@+id/text_meetingtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -39,18 +35,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/text_itemdesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:text="Description: "
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/text_itemdate"
+                android:id="@+id/text_meetingdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -61,17 +46,26 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/text_itemstat"
+                android:id="@+id/text_meetingstart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:text="Status: "
+                android:text="Start Time: "
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/text_meetingend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="EndTime "
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
         </LinearLayout>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
