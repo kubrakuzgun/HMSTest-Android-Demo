@@ -252,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -275,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(meetingsIntent);
     }
+
+
 
 
 }

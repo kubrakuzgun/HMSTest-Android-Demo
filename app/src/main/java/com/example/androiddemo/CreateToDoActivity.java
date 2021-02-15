@@ -116,10 +116,12 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         mTodos.clear();
         mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
         mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+        mAdapter.setOnItemClickListener(CreateToDoActivity.this);
         if(mAdapter.getItemCount()>0){
             notodo.setVisibility(View.INVISIBLE);
             mTodos.clear();
             mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+            mAdapter.setOnItemClickListener(CreateToDoActivity.this);
             //attach adapter to activity's view (add card to recycler view)
             todoListView.setAdapter(mAdapter);
         }
@@ -174,6 +176,7 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 //list all to-do
                 notodo.setVisibility(View.GONE);
                 mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+                mAdapter.setOnItemClickListener(CreateToDoActivity.this);
                 todoListView.setAdapter(mAdapter);
 
                 Toast.makeText(CreateToDoActivity.this, "TODO CREATED", Toast.LENGTH_LONG).show();

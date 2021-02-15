@@ -92,7 +92,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
         //create menu
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Options");
+/*            menu.setHeaderTitle("Options");
             MenuItem edit = menu.add(Menu.NONE, 1, 1, "Edit");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Delete");
 
@@ -100,7 +100,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
             edit.setOnMenuItemClickListener(this);
 
             //set click listener to delete option
-            delete.setOnMenuItemClickListener(this);
+            delete.setOnMenuItemClickListener(this);*/
         }
 
         //when an edit menu item is clicked
@@ -139,7 +139,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
 
     //set item click listener
     public void setOnItemClickListener(ToDoListAdapter.OnItemClickListener listener) {
-        mListener = (OnItemClickListener) listener;
+        // mListener = (OnItemClickListener) listener;
     }
 
 }
