@@ -4,18 +4,21 @@
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
-    android:background="#F1EFF4">
+    android:layout_margin="8dp"
+    android:background="#FBF6F6">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:background="#1E6A797E">
 
 
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="10dp">
@@ -31,16 +34,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/text_meetingid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="ID: "
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
             <TextView
                 android:id="@+id/text_meetingdate"
                 android:layout_width="match_parent"

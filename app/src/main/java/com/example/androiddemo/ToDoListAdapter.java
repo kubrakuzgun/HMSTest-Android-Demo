@@ -45,7 +45,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.TodoLi
         ToDo currentTodo = todos.get(position);
 
         holder.textTitle.setText(currentTodo.getTodoTitle());
-        holder.textID.setText("ID: " + currentTodo.getTodoID());
         holder.textDesc.setText("Description: " +currentTodo.getTodoDesc());
         holder.textDate.setText("Date: " +currentTodo.getTodoDate());
         holder.textStat.setText("Status: " +currentTodo.getTodoStatus());
@@ -93,7 +92,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.TodoLi
         public TodoListHolder(View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.text_itemtitle);
-            textID = itemView.findViewById(R.id.text_itemid);
             textDesc = itemView.findViewById(R.id.text_itemdesc);
             textDate = itemView.findViewById(R.id.text_itemdate);
             textStat = itemView.findViewById(R.id.text_itemstat);

@@ -44,7 +44,6 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
         Meeting currentMeeting = meetings.get(position);
 
         holder.textTitle.setText(currentMeeting.getMeetingTitle());
-        holder.textID.setText("ID: " + currentMeeting.getMeetingID());
         holder.textStart.setText("Start: " +currentMeeting.getMeetingStart());
         holder.textDate.setText("Date: " +currentMeeting.getMeetingDate());
         holder.textEnd.setText("End: " +currentMeeting.getMeetingEnd());
@@ -68,7 +67,6 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
         public MeetingListHolder(View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.text_meetingtitle);
-            textID = itemView.findViewById(R.id.text_meetingid);
             textStart = itemView.findViewById(R.id.text_meetingstart);
             textDate = itemView.findViewById(R.id.text_meetingdate);
             textEnd = itemView.findViewById(R.id.text_meetingend);
