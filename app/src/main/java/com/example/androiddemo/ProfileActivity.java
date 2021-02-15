@@ -232,6 +232,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 String encodedString = Base64.encodeToString(b, Base64.DEFAULT);
                 editor.putString("profilePicture",encodedString);
                 editor.apply();
+                recreate();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(ProfileActivity.this, "File not found", Toast.LENGTH_LONG).show();

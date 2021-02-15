@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,9 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
 
     ToDoListAdapter mAdapter;
     private List<ToDo> mTodos;
+
+    TextView notodo;
+    RecyclerView todoListView;
 
 
     @Override
@@ -99,9 +104,10 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         EditText todoTitle = findViewById(R.id.editText_Title);
         EditText todoDesc = findViewById(R.id.editText_Desc);
         EditText todoDate = findViewById(R.id.editText_Date);
-        TextView notodo = findViewById(R.id.text_notodo);
         Button addButton = findViewById(R.id.button_Add);
-        RecyclerView todoListView = findViewById(R.id.todoListView);
+
+        notodo = findViewById(R.id.text_notodo);
+        todoListView = findViewById(R.id.todoListView);
 
         todoListView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -110,10 +116,12 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         mTodos.clear();
         mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
         mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+        mAdapter.setOnItemClickListener(CreateToDoActivity.this);
         if(mAdapter.getItemCount()>0){
             notodo.setVisibility(View.INVISIBLE);
             mTodos.clear();
             mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+            mAdapter.setOnItemClickListener(CreateToDoActivity.this);
             //attach adapter to activity's view (add card to recycler view)
             todoListView.setAdapter(mAdapter);
         }
@@ -168,6 +176,7 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 //list all to-do
                 notodo.setVisibility(View.GONE);
                 mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+                mAdapter.setOnItemClickListener(CreateToDoActivity.this);
                 todoListView.setAdapter(mAdapter);
 
                 Toast.makeText(CreateToDoActivity.this, "TODO CREATED", Toast.LENGTH_LONG).show();
@@ -270,15 +279,118 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
 
     }
 
+
     @Override
     public void onEditClick(int position) {
         //TODO add edit to-do func
+
+        //get selected to-do's position and key
+        final ToDo selectedItem = mTodos.get(position);
+        Log.d("position", ": " + mTodos.get(position));
+        Log.d("todo", ": " + selectedItem.getTodoID());
+
+
+        //create alert to confirm delete
+        AlertDialog.Builder alert = new AlertDialog.Builder(CreateToDoActivity.this);
+        LinearLayout ll = new LinearLayout(CreateToDoActivity.this);
+        final EditText newTitle = new EditText(CreateToDoActivity.this);
+        newTitle.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newTitle.setHint("Title");
+        newTitle.setText(selectedItem.getTodoTitle());
+
+        final EditText newDesc = new EditText(CreateToDoActivity.this);
+        newDesc.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newDesc.setHint("Description");
+        newDesc.setText(selectedItem.getTodoDesc());
+
+        final EditText newDate = new EditText(CreateToDoActivity.this);
+        newDate.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newDate.setHint("Date");
+        newDate.setFocusable(false);
+        newDate.setClickable(true);
+        newDate.setText(selectedItem.getTodoDate());
+
+        final Calendar newCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener editdatedialog = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                newCalendar.set(Calendar.YEAR, year);
+                newCalendar.set(Calendar.MONTH, monthOfYear);
+                newCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "dd/MM/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                newDate.setText(sdf.format(newCalendar.getTime()));
+            }
+
+        };
+
+        newDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CreateToDoActivity.this, editdatedialog, newCalendar
+                        .get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                        newCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(newTitle);
+        ll.addView(newDesc);
+        ll.addView(newDate);
+        alert.setTitle("Edit TODO");
+        alert.setView(ll);
+
+
+        alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //update to-do
+                selectedItem.setTodoTitle(newTitle.getText().toString().trim());
+                selectedItem.setTodoDesc(newDesc.getText().toString().trim());
+                selectedItem.setTodoDate(newDate.getText().toString().trim());
+                databaseHelper.updateToDo(selectedItem);
+
+                mTodos = new ArrayList<>();
+
+                mAdapter.notifyDataSetChanged();
+                mTodos.clear();
+                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+                //list all to-do
+                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+                todoListView = findViewById(R.id.todoListView);
+                todoListView.setLayoutManager(new LinearLayoutManager(CreateToDoActivity.this));
+                todoListView.setAdapter(mAdapter);
+                if(mAdapter.getItemCount()<1){
+                    notodo = findViewById(R.id.text_notodo);
+                    todoListView.setVisibility(View.GONE);
+                    notodo.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
     }
+
 
     @Override
     public void onDeleteClick(int position) {
-        //get selected memory's position and key
+        //get selected to-do's position and key
         final ToDo selectedItem = mTodos.get(position);
+        Log.d("position", ": " + mTodos.get(position));
+        Log.d("todo", ": " + selectedItem.getTodoID());
+
 
         //create alert to confirm delete
         AlertDialog.Builder alert = new AlertDialog.Builder(CreateToDoActivity.this);
@@ -288,6 +400,22 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
             public void onClick(DialogInterface dialog, int whichButton) {
                 //delete to-do
                 databaseHelper.deleteToDo(selectedItem);
+
+                mTodos = new ArrayList<>();
+
+                mAdapter.notifyDataSetChanged();
+                mTodos.clear();
+                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+                //list all to-do
+                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+                todoListView = findViewById(R.id.todoListView);
+                todoListView.setLayoutManager(new LinearLayoutManager(CreateToDoActivity.this));
+                todoListView.setAdapter(mAdapter);
+                if(mAdapter.getItemCount()<1){
+                    notodo = findViewById(R.id.text_notodo);
+                    todoListView.setVisibility(View.GONE);
+                    notodo.setVisibility(View.VISIBLE);
+                }
             }
 
         });
