@@ -173,9 +173,8 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="28dp"
             android:background="@drawable/edittext_transparent"
-            android:clickable="true"
+            android:clickable="false"
             android:gravity="start|left"
-            android:onClick="addMeeting"
             android:src="@drawable/addicon"
             app:layout_constraintStart_toEndOf="@+id/titleMeeting"
             app:layout_constraintTop_toBottomOf="@+id/todaysTodoListView" />

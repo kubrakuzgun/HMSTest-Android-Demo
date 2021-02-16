@@ -1,5 +1,6 @@
 package com.example.androiddemo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,105 +11,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    private DatabaseHelper databaseHelper;
-    private String user;
-    String usernameFromRegister;
-
-    //check empty inputs
-    public boolean checkIfFieldsEmpty(EditText field){
-        if(field.length()==0)
-        {
-            field.requestFocus();
-            field.setError("This field cannot be blank!");
-            return true;
-        }
-        return false;
-    }
+    String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
-        databaseHelper = new DatabaseHelper(LoginActivity.this);
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
+        EditText username = findViewById(R.id.edittext_email);
+        EditText password = findViewById(R.id.edittext_psw);
+        Button btn_login = findViewById(R.id.button_logout);
 
 
-        if (preferences.contains("isLoggedIn")){   //go to main activity if user already logged in
-            user = preferences.getString("username", "");
-            Log.d("username", user);
-            goToMainActivity();
-        }
+        //go to main activity if user already logged in
 
 
-        else{   //continue login activity if user not logged in
-            EditText username = findViewById(R.id.edittext_email);
-            EditText password = findViewById(R.id.edittext_psw);
-            Button btn_login = findViewById(R.id.button_logout);
+        //continue login activity if user not logged in
 
-            //check if there is a string received from register activity, if received display directly
-            if (savedInstanceState == null) {
-                Bundle extras = getIntent().getExtras();
-                if(extras == null) {
-                    usernameFromRegister= null;
-                } else {
-                    usernameFromRegister= extras.getString("username");
-                    username.setText(usernameFromRegister);
-                }
-            } else {
-                usernameFromRegister= (String) savedInstanceState.getSerializable("username");
-            }
-
-            btn_login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!checkIfFieldsEmpty(username) && !checkIfFieldsEmpty(password)){
-                        if(databaseHelper.checkCredentials(username.getText().toString().trim(),password.getText().toString())){
-                            user=username.getText().toString().trim();
-                            editor.putBoolean("isLoggedIn",true);
-                            editor.putString("username", username.getText().toString().trim());
-                            editor.apply();
-                            goToMainActivity();
-
-                        }
-                        else{
-                            CustomErrorDialog alert = new CustomErrorDialog();
-                            alert.showDialog(LoginActivity.this, "Incorrect username or password!");
-
-                        }
-                    }
-                }
-            });
-
-        }
 
     }
 
-    //close app when navigation back pressed
-    @Override
-    public void onBackPressed(){
-        finishAffinity();
-    }
+    //override onBackPressed method: close app when pressed back
+
 
     public void goToMainActivity(){
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         mainIntent.putExtra("username", user);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         startActivity(mainIntent);
     }
 
-    public void goToRegister(View v){
-        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-        startActivity(registerIntent);
-    }
+
+    //func. for clickable Register text
+
 
 }
