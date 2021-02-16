@@ -151,13 +151,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
             }
 
-            case R.id.nav_calendar: {
+/*            case R.id.nav_calendar: {
                 Intent calendarIntent = new Intent(ProfileActivity.this, CalendarActivity.class);
                 calendarIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(calendarIntent);
                 break;
-            }
+            }*/
 
             case R.id.nav_todo: {
                 Intent todoIntent = new Intent(getApplicationContext(), CreateToDoActivity.class);
@@ -166,13 +166,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(todoIntent);
                 break;
             }
-            case R.id.nav_meetings: {
+/*            case R.id.nav_meetings: {
                 Intent meetingsIntent = new Intent(getApplicationContext(), CreateMeetingsActivity.class);
                 meetingsIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(meetingsIntent);
                 break;
-            }
+            }*/
             case R.id.nav_logout: {
                 preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 editor = preferences.edit();
@@ -185,13 +185,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(loginIntent);
                 break;
             }
-            case R.id.nav_settings: {
+/*            case R.id.nav_settings: {
                 Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
                 settingsIntent.putExtra("username", user);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(settingsIntent);
                 break;
-            }
+            }*/
 
         }
         //close navigation drawer
