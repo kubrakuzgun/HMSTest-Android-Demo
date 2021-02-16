@@ -18,17 +18,6 @@ public class RegisterActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    //check empty inputs
-    public boolean checkIfFieldsEmpty(EditText field){
-        if(field.length()==0)
-        {
-            field.requestFocus();
-            field.setError("This field cannot be blank!");
-            return true;
-        }
-        return false;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         startActivity(loginIntent);
+    }
+
+    //check empty inputs
+    public boolean checkIfFieldsEmpty(EditText field){
+        if(field.length()==0)
+        {
+            field.requestFocus();
+            field.setError("This field cannot be blank!");
+            return true;
+        }
+        return false;
     }
 
 }
