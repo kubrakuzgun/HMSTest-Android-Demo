@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
     // Database Name
     private static final String DATABASE_NAME = "DemoDatabase.db";
     // User table name
@@ -54,14 +54,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_TODO_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_TODO_TITLE+ " TEXT," + COLUMN_CURRENT_USER_ID+ " INTEGER," + COLUMN_TODO_DESC+ " TEXT,"
             + COLUMN_TODO_STATUS+ " TEXT," + COLUMN_TODO_DATE+ " TEXT" + ")";
     // drop table sql query
-    private String DROP_TODO_TABLE= "DROP TABLE IF EXISTS " + TABLE_USER;
+    private String DROP_TODO_TABLE= "DROP TABLE IF EXISTS " + TABLE_TODO;
 
     //create Meeting table
     private String CREATE_MEETING_TABLE= "CREATE TABLE " + TABLE_MEETING+ "("
             + COLUMN_MEETING_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MEETING_TITLE+ " TEXT," + COLUMN_CURRENT_USER_ID+ " INTEGER," + COLUMN_MEETING_DATE+ " TEXT,"
             + COLUMN_MEETING_START+ " TEXT," + COLUMN_MEETING_END+ " TEXT" + ")";
     //drop table -meeting
-    private String DROP_MEETING_TABLE= "DROP TABLE IF EXISTS " + TABLE_USER;
+    private String DROP_MEETING_TABLE= "DROP TABLE IF EXISTS " + TABLE_MEETING;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
