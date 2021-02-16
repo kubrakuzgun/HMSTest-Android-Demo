@@ -56,6 +56,15 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
     TextView notodo;
     RecyclerView todoListView;
 
+    public void refreshRecylerView(){
+        mAdapter.notifyDataSetChanged();
+        mTodos.clear();
+        mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
+        //list all to-do
+        mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
+        mAdapter.setOnItemClickListener(CreateToDoActivity.this);
+        todoListView.setAdapter(mAdapter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +74,6 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         Bundle extras = getIntent().getExtras();
         user= extras.getString("username");
         Log.d("todo username", user);
-
 
         databaseHelper = new DatabaseHelper(CreateToDoActivity.this);
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -111,7 +119,6 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
 
         todoListView.setLayoutManager(new LinearLayoutManager(this));
 
-
         mTodos = new ArrayList<>();
         mTodos.clear();
         mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
@@ -119,9 +126,6 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
         mAdapter.setOnItemClickListener(CreateToDoActivity.this);
         if(mAdapter.getItemCount()>0){
             notodo.setVisibility(View.INVISIBLE);
-            mTodos.clear();
-            mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-            mAdapter.setOnItemClickListener(CreateToDoActivity.this);
             //attach adapter to activity's view (add card to recycler view)
             todoListView.setAdapter(mAdapter);
         }
@@ -170,17 +174,15 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 todo.setTodoUserID(databaseHelper.getIDfromUsername(user));
 
                 databaseHelper.addToDo(todo);
-                mAdapter.notifyDataSetChanged();
-                mTodos.clear();
-                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-                //list all to-do
                 notodo.setVisibility(View.GONE);
-                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
-                mAdapter.setOnItemClickListener(CreateToDoActivity.this);
-                todoListView.setAdapter(mAdapter);
 
                 Toast.makeText(CreateToDoActivity.this, "TODO CREATED", Toast.LENGTH_LONG).show();
 
+                todoTitle.setText("");
+                todoDesc.setText("");
+                todoDate.setText("");
+
+                refreshRecylerView();
             }
         });
 
@@ -219,6 +221,8 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
 
 
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -354,21 +358,8 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 selectedItem.setTodoDate(newDate.getText().toString().trim());
                 databaseHelper.updateToDo(selectedItem);
 
-                mTodos = new ArrayList<>();
+                refreshRecylerView();
 
-                mAdapter.notifyDataSetChanged();
-                mTodos.clear();
-                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-                //list all to-do
-                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
-                todoListView = findViewById(R.id.todoListView);
-                todoListView.setLayoutManager(new LinearLayoutManager(CreateToDoActivity.this));
-                todoListView.setAdapter(mAdapter);
-                if(mAdapter.getItemCount()<1){
-                    notodo = findViewById(R.id.text_notodo);
-                    todoListView.setVisibility(View.GONE);
-                    notodo.setVisibility(View.VISIBLE);
-                }
             }
 
         });
@@ -401,16 +392,8 @@ public class CreateToDoActivity extends AppCompatActivity implements NavigationV
                 //delete to-do
                 databaseHelper.deleteToDo(selectedItem);
 
-                mTodos = new ArrayList<>();
+                refreshRecylerView();
 
-                mAdapter.notifyDataSetChanged();
-                mTodos.clear();
-                mTodos.addAll(databaseHelper.getAllToDo(databaseHelper.getIDfromUsername(user)));
-                //list all to-do
-                mAdapter = new ToDoListAdapter(CreateToDoActivity.this, mTodos);
-                todoListView = findViewById(R.id.todoListView);
-                todoListView.setLayoutManager(new LinearLayoutManager(CreateToDoActivity.this));
-                todoListView.setAdapter(mAdapter);
                 if(mAdapter.getItemCount()<1){
                     notodo = findViewById(R.id.text_notodo);
                     todoListView.setVisibility(View.GONE);

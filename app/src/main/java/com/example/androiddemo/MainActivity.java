@@ -1,12 +1,14 @@
 package com.example.androiddemo;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -76,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseHelper = new DatabaseHelper(MainActivity.this);
         ///
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
-        editor.putBoolean("isLoggedIn", true);
-        editor.apply();
         ///Locate the lists to this activity layout.
         todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
         todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
@@ -229,12 +228,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.nav_logout: {
-                editor = preferences.edit();
-                editor.clear();
-                editor.apply();
-                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                startActivity(loginIntent);
+                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                alert.setMessage("Do you want to log out?");
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                alert.setPositiveButton("LOGOUT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        editor = preferences.edit();
+                        editor.remove("isLoggedIn");
+                        editor.clear();
+                        editor.apply();
+                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        startActivity(loginIntent);
+                    }
+                });
+
+                alert.show();
                 break;
             }
             case R.id.nav_settings: {
