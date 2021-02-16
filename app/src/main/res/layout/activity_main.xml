@@ -85,19 +85,6 @@
             app:layout_constraintVertical_bias="0.136"
             app:srcCompat="@drawable/plantheday_text_2" />
 
-        <View
-            android:id="@+id/view_blurbackground"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#4A393939"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:visibility="invisible" />
-
         <TextView
             android:id="@+id/txt_titleToDo"
             android:layout_width="wrap_content"
