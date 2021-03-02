@@ -1,14 +1,12 @@
 package com.example.androiddemo;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +19,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
     private Context mContext;
     private DatabaseHelper databaseHelper;
     private List<Meeting> meetings;
-    private MeetingListAdapter.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
 
     //Constructor
     public MeetingListAdapter(Context context, List<Meeting> allmeeting) {
@@ -84,7 +82,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     //call item click function
-                    mListener.onItemClick(position);
+                    mListener.meetingOnItemClick(position);
                 }
             }
         }
@@ -92,7 +90,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
         //create menu
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-/*            menu.setHeaderTitle("Options");
+            menu.setHeaderTitle("Options");
             MenuItem edit = menu.add(Menu.NONE, 1, 1, "Edit");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Delete");
 
@@ -100,7 +98,7 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
             edit.setOnMenuItemClickListener(this);
 
             //set click listener to delete option
-            delete.setOnMenuItemClickListener(this);*/
+            delete.setOnMenuItemClickListener(this);
         }
 
         //when an edit menu item is clicked
@@ -115,11 +113,11 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
                     switch (item.getItemId()) {
                         //id is 1 - edit memory
                         case 1:
-                            mListener.onEditClick(position);
+                            mListener.meetingOnEditClick(position);
                             return true;
                         //id is 2 - delete memory
                         case 2:
-                            mListener.onDeleteClick(position);
+                            mListener.meetingOnDeleteClick(position);
                             return true;
                     }
                 }
@@ -130,16 +128,16 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
 
     //interface for item click, edit and delete operations
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void meetingOnItemClick(int position);
 
-        void onEditClick(int position);
+        void meetingOnEditClick(int position);
 
-        void onDeleteClick(int position);
+        void meetingOnDeleteClick(int position);
     }
 
     //set item click listener
-    public void setOnItemClickListener(ToDoListAdapter.OnItemClickListener listener) {
-        // mListener = (OnItemClickListener) listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
 }

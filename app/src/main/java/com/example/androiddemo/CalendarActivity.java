@@ -7,12 +7,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,7 +24,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,7 +40,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CalendarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CalendarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener, MeetingListAdapter.OnItemClickListener{
     private DatabaseHelper databaseHelper;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -45,7 +53,10 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
     private List<ToDo> mTodos;
     private List<Meeting> mMeetings;
     String user;
-
+    TextView textNotodo, textNoMeeting;
+    RecyclerView todaysTodoList;
+    RecyclerView todaysMeetingList;
+    String currentDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +66,9 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         Log.d("main username", user);
 
         calendarView = findViewById(R.id.calendarView);
-        RecyclerView todaysTodoList = findViewById(R.id.currentTodoListView);
-        RecyclerView todaysMeetingList = findViewById(R.id.currentMeetingListView);
-        TextView textNotodo, textNoMeeting;
+        todaysTodoList = findViewById(R.id.currentTodoListView);
+        todaysMeetingList = findViewById(R.id.currentMeetingListView);
+
         textNotodo = findViewById(R.id.text_calNotodo);
         textNoMeeting = findViewById(R.id.text_calNoMeeting);
 
@@ -77,7 +88,7 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         String day_string = currentDateTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         String myFormat = "dd/MM/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
-        String currentDate = sdf.format(currentDateTime.getTime());
+        currentDate = sdf.format(currentDateTime.getTime());
         Log.d("formatted date", currentDate);
 
         //List To do
@@ -85,6 +96,7 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         mTodos.clear();
         mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
         mAdapter = new ToDoListAdapter(CalendarActivity.this, mTodos);
+        mAdapter.setOnItemClickListener(CalendarActivity.this);
         if (mAdapter.getItemCount() > 0) {
             textNotodo.setVisibility(View.INVISIBLE);
             mTodos.clear();
@@ -98,6 +110,7 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         mMeetings.clear();
         mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
         meetingAdapter = new MeetingListAdapter(CalendarActivity.this, mMeetings);
+        meetingAdapter.setOnItemClickListener(CalendarActivity.this);
         if (meetingAdapter.getItemCount() > 0) {
             textNoMeeting.setVisibility((View.INVISIBLE));
             mMeetings.clear();
@@ -118,16 +131,18 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
                 String formattedDate = sdf.format(calendar.getTime());
+                currentDate=formattedDate;
                 Log.d("formatDate", "sDate formatted: " + formattedDate);
                 //List To do
                 mTodos = new ArrayList<>();
                 mTodos.clear();
-                mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+                mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
                 mAdapter = new ToDoListAdapter(CalendarActivity.this, mTodos);
+                mAdapter.setOnItemClickListener(CalendarActivity.this);
                 if (mAdapter.getItemCount() > 0) {
                     textNotodo.setVisibility(View.INVISIBLE);
                     mTodos.clear();
-                    mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+                    mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
                     //attach adapter to activity's view (add card to recycler view)
                     todaysTodoList.setAdapter(mAdapter);
                 }
@@ -135,13 +150,15 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
                 //List Meeting
                 mMeetings = new ArrayList<>();
                 mMeetings.clear();
-                mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+                mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
+                meetingAdapter.setOnItemClickListener(CalendarActivity.this);
                 if (mMeetings != null) {
                     meetingAdapter = new MeetingListAdapter(CalendarActivity.this, mMeetings);
+                    meetingAdapter.setOnItemClickListener(CalendarActivity.this);
                     if (meetingAdapter.getItemCount() > 0) {
                         textNoMeeting.setVisibility((View.INVISIBLE));
                         mMeetings.clear();
-                        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), formattedDate));
+                        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
                         todaysMeetingList.setAdapter(meetingAdapter);
                     }
                 }
@@ -288,5 +305,360 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         meetingsIntent.putExtra("username", user);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         startActivity(meetingsIntent);
+    }
+
+    public void todoRefreshRecylerView(){
+        mAdapter.notifyDataSetChanged();
+        mTodos.clear();
+        mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
+        //list all to-do
+        mAdapter = new ToDoListAdapter(CalendarActivity.this, mTodos);
+        mAdapter.setOnItemClickListener(CalendarActivity.this);
+        todaysTodoList.setAdapter(mAdapter);
+    }
+
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+
+    @Override
+    public void onEditClick(int position) {
+        //TODO add edit to-do func
+
+        //get selected to-do's position and key
+        final ToDo selectedItem = mTodos.get(position);
+        Log.d("position", ": " + mTodos.get(position));
+        Log.d("todo", ": " + selectedItem.getTodoID());
+
+
+        //create alert to confirm delete
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(CalendarActivity.this);
+        LinearLayout ll = new LinearLayout(CalendarActivity.this);
+        final EditText newTitle = new EditText(CalendarActivity.this);
+        newTitle.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newTitle.setHint("Title");
+        newTitle.setText(selectedItem.getTodoTitle());
+
+        final EditText newDesc = new EditText(CalendarActivity.this);
+        newDesc.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newDesc.setHint("Description");
+        newDesc.setText(selectedItem.getTodoDesc());
+
+        final EditText newDate = new EditText(CalendarActivity.this);
+        newDate.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newDate.setHint("Date");
+        newDate.setFocusable(false);
+        newDate.setClickable(true);
+        newDate.setText(selectedItem.getTodoDate());
+
+        final Calendar newCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener editdatedialog = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                newCalendar.set(Calendar.YEAR, year);
+                newCalendar.set(Calendar.MONTH, monthOfYear);
+                newCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "dd/MM/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                newDate.setText(sdf.format(newCalendar.getTime()));
+            }
+
+        };
+
+        newDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CalendarActivity.this, editdatedialog, newCalendar
+                        .get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                        newCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(newTitle);
+        ll.addView(newDesc);
+        ll.addView(newDate);
+        alert.setTitle("Edit TODO");
+        alert.setView(ll);
+
+
+        alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //update to-do
+                selectedItem.setTodoTitle(newTitle.getText().toString().trim());
+                selectedItem.setTodoDesc(newDesc.getText().toString().trim());
+                selectedItem.setTodoDate(newDate.getText().toString().trim());
+                databaseHelper.updateToDo(selectedItem);
+
+                todoRefreshRecylerView();
+                if(mAdapter.getItemCount()==0){
+                    textNotodo= findViewById(R.id.text_notodo);
+                    todaysTodoList.setVisibility(View.GONE);
+                    textNotodo.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
+    }
+
+
+    @Override
+    public void onDeleteClick(int position) {
+        //get selected to-do's position and key
+        final ToDo selectedItem = mTodos.get(position);
+        Log.d("position", ": " + mTodos.get(position));
+        Log.d("todo", ": " + selectedItem.getTodoID());
+
+
+        //create alert to confirm delete
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(CalendarActivity.this);
+        alert.setMessage("Do you want to delete this TODO?");
+
+        alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //delete to-do
+                databaseHelper.deleteToDo(selectedItem);
+
+                todoRefreshRecylerView();
+
+                if(mAdapter.getItemCount()==0){
+                    textNotodo= findViewById(R.id.text_notodo);
+                    todaysTodoList.setVisibility(View.GONE);
+                    textNotodo.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
+    }
+    public void meetingRefreshRecylerView(){
+        meetingAdapter.notifyDataSetChanged();
+        mMeetings.clear();
+        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
+        //list all meeting
+        meetingAdapter = new MeetingListAdapter(CalendarActivity.this, mMeetings);
+        meetingAdapter.setOnItemClickListener(CalendarActivity.this);
+        todaysMeetingList.setAdapter(meetingAdapter);
+    }
+
+
+    @Override
+    public void meetingOnItemClick(int position) {
+
+    }
+
+
+    @Override
+    public void meetingOnEditClick(int position) {
+        //Meeting add edit meeting func
+
+        //get selected meeting's position and key
+        final Meeting meetingSelectedItem = mMeetings.get(position);
+        Log.d("position", ": " + mMeetings.get(position));
+        Log.d("meeting", ": " + meetingSelectedItem.getMeetingID());
+
+
+        //create alert to confirm delete
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(CalendarActivity.this);
+        LinearLayout ll = new LinearLayout(CalendarActivity.this);
+        final EditText newMeetingTitle = new EditText(CalendarActivity.this);
+        newMeetingTitle.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newMeetingTitle.setHint("Meeting Title");
+        newMeetingTitle.setText(meetingSelectedItem.getMeetingTitle());
+
+        final EditText newMeetingDate = new EditText(CalendarActivity.this);
+        newMeetingDate.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newMeetingDate.setHint("Meeting Date");
+        newMeetingDate.setFocusable(false);
+        newMeetingDate.setClickable(true);
+        newMeetingDate.setText(meetingSelectedItem.getMeetingDate());
+        final Calendar newCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener editdatedialog = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                newCalendar.set(Calendar.YEAR, year);
+                newCalendar.set(Calendar.MONTH, monthOfYear);
+                newCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "dd/MM/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                newMeetingDate.setText(sdf.format(newCalendar.getTime()));
+            }
+
+        };
+        newMeetingDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CalendarActivity.this, editdatedialog, newCalendar
+                        .get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                        newCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        final EditText newMeetingStart = new EditText(CalendarActivity.this);
+        newMeetingStart.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newMeetingStart.setHint("Start Time");
+        newMeetingStart.setFocusable(false);
+        newMeetingStart.setClickable(true);
+        newMeetingStart.setText(meetingSelectedItem.getMeetingStart());
+
+        newMeetingStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();//
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);//Güncel saati aldık
+                int minute = mcurrentTime.get(Calendar.MINUTE);//
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(CalendarActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        newMeetingStart.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);
+                timePicker.setTitle("Start Time");
+                timePicker.setButton(DatePickerDialog.BUTTON_POSITIVE, "OK", timePicker);
+                timePicker.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", timePicker);
+
+                timePicker.show();
+            }
+        });
+
+
+        final EditText newMeetingEnd = new EditText(CalendarActivity.this);
+        newMeetingEnd.setInputType(InputType.TYPE_CLASS_TEXT  | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newMeetingEnd.setHint("End Time");
+        newMeetingEnd.setFocusable(false);
+        newMeetingEnd.setClickable(true);
+        newMeetingEnd.setText(meetingSelectedItem.getMeetingEnd());
+
+        newMeetingEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();//
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);//Güncel saati aldık
+                int minute = mcurrentTime.get(Calendar.MINUTE);//
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(CalendarActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        newMeetingEnd.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                    }
+                }, hour, minute, true);
+                timePicker.setTitle("Start Time");
+                timePicker.setButton(DatePickerDialog.BUTTON_POSITIVE, "OK", timePicker);
+                timePicker.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", timePicker);
+
+                timePicker.show();
+            }
+        });
+
+
+
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(newMeetingTitle);
+        ll.addView(newMeetingDate);
+        ll.addView(newMeetingStart);
+        ll.addView(newMeetingEnd);
+        alert.setTitle("Edit Meeting");
+        alert.setView(ll);
+
+
+        alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //update to-do
+                meetingSelectedItem.setMeetingTitle(newMeetingTitle.getText().toString().trim());
+                meetingSelectedItem.setMeetingDate(newMeetingDate.getText().toString().trim());
+                meetingSelectedItem.setMeetingStart(newMeetingStart.getText().toString().trim());
+                meetingSelectedItem.setMeetingEnd(newMeetingEnd.getText().toString().trim());
+                databaseHelper.updateMeeting(meetingSelectedItem);
+
+                meetingRefreshRecylerView();
+                if(meetingAdapter.getItemCount()==0){
+                    textNoMeeting= findViewById(R.id.text_nomeeting);
+                    todaysMeetingList.setVisibility(View.GONE);
+                    textNoMeeting.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
+    }
+
+
+    @Override
+    public void meetingOnDeleteClick(int position) {
+        //get selected to-do's position and key
+        final Meeting meetingSelectedItem = mMeetings.get(position);
+        Log.d("position", ": " + mMeetings.get(position));
+        Log.d("meeting", ": " + meetingSelectedItem.getMeetingID());
+
+
+        //create alert to confirm delete
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(CalendarActivity.this);
+        alert.setMessage("Do you want to delete this Meeting?");
+
+        alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //delete meeting
+                databaseHelper.deleteMeeting(meetingSelectedItem);
+
+                meetingRefreshRecylerView();
+
+                if(meetingAdapter.getItemCount()==0){
+                    textNoMeeting= findViewById(R.id.text_nomeeting);
+                    todaysMeetingList.setVisibility(View.GONE);
+                    textNoMeeting.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
     }
 }
