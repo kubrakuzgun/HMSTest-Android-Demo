@@ -1,4 +1,4 @@
-//Training 5
+//Training 5-Main
 package com.example.androiddemo;
 
 import androidx.annotation.NonNull;
