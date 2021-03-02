@@ -47,7 +47,9 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
-    CalendarView calendarView;
+
+    //////////Define Calendar View ///////////////////
+
     ToDoListAdapter mAdapter;
     MeetingListAdapter meetingAdapter;
     private List<ToDo> mTodos;
@@ -65,7 +67,10 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
         user = extras.getString("username");
         Log.d("main username", user);
 
-        calendarView = findViewById(R.id.calendarView);
+        ///////////Specified Calendar View/////////
+
+
+
         todaysTodoList = findViewById(R.id.currentTodoListView);
         todaysMeetingList = findViewById(R.id.currentMeetingListView);
 
@@ -83,9 +88,6 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
 
 
         Calendar currentDateTime = Calendar.getInstance();
-        String dd_string = String.valueOf(currentDateTime.get(Calendar.DAY_OF_MONTH));
-        String month_string = currentDateTime.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        String day_string = currentDateTime.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         String myFormat = "dd/MM/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
         currentDate = sdf.format(currentDateTime.getTime());
@@ -118,52 +120,27 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
             todaysMeetingList.setAdapter(meetingAdapter);
         }
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        //Get selected date data
 
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month,
-                                            int dayOfMonth) {
-                textNotodo.setVisibility(View.VISIBLE);
-                textNoMeeting.setVisibility(View.VISIBLE);
-                todaysTodoList.setAdapter(null);
-                todaysMeetingList.setAdapter(null);
-                final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                String formattedDate = sdf.format(calendar.getTime());
-                currentDate=formattedDate;
-                Log.d("formatDate", "sDate formatted: " + formattedDate);
-                //List To do
-                mTodos = new ArrayList<>();
-                mTodos.clear();
-                mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
-                mAdapter = new ToDoListAdapter(CalendarActivity.this, mTodos);
-                mAdapter.setOnItemClickListener(CalendarActivity.this);
-                if (mAdapter.getItemCount() > 0) {
-                    textNotodo.setVisibility(View.INVISIBLE);
-                    mTodos.clear();
-                    mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), currentDate));
-                    //attach adapter to activity's view (add card to recycler view)
-                    todaysTodoList.setAdapter(mAdapter);
-                }
 
-                //List Meeting
-                mMeetings = new ArrayList<>();
-                mMeetings.clear();
-                mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
-                meetingAdapter.setOnItemClickListener(CalendarActivity.this);
-                if (mMeetings != null) {
-                    meetingAdapter = new MeetingListAdapter(CalendarActivity.this, mMeetings);
-                    meetingAdapter.setOnItemClickListener(CalendarActivity.this);
-                    if (meetingAdapter.getItemCount() > 0) {
-                        textNoMeeting.setVisibility((View.INVISIBLE));
-                        mMeetings.clear();
-                        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), currentDate));
-                        todaysMeetingList.setAdapter(meetingAdapter);
-                    }
-                }
-            }
-        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //side menu

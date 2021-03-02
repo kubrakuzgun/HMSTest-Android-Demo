@@ -42,7 +42,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     View blurView;
-//Define DataBase Helper object and username string
+    //Define DataBase Helper object and username string
     private DatabaseHelper databaseHelper;
     String user;
     //design tools definition:
@@ -54,12 +54,13 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meetings);
-
+        //Get data by using Bundle object
         Bundle extras = getIntent().getExtras();
         user = extras.getString("username");
         Log.d("Meeting username", user);
-
+        //Database Helper
         databaseHelper = new DatabaseHelper(CreateMeetingsActivity.this);
+        //Preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
@@ -100,6 +101,7 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
         timeEditClicks();
         Meeting meeting = new Meeting();
 
+        //Add Meeting Record to Database
         btn_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,51 +263,22 @@ public class CreateMeetingsActivity extends AppCompatActivity implements Navigat
             }
         });
 
-        //Edit Start Time
-        btn_StartEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();//
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);//Güncel saati aldık
-                int minute = mcurrentTime.get(Calendar.MINUTE);//
-                TimePickerDialog timePicker;
+        //Edit Start Time///////////////
 
-                timePicker = new TimePickerDialog(CreateMeetingsActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        edt_start.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
-                    }
-                }, hour, minute, true);
-                timePicker.setTitle("Start Time");
-                timePicker.setButton(DatePickerDialog.BUTTON_POSITIVE, "OK", timePicker);
-                timePicker.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", timePicker);
 
-                timePicker.show();
 
-            }
-        });
-        //Edit End Time
-        btn_EndEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();//
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);//Güncel saati aldık
-                int minute = mcurrentTime.get(Calendar.MINUTE);//
-                TimePickerDialog timePicker;
-                timePicker = new TimePickerDialog(CreateMeetingsActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        edt_end.setText(String.format("%02d:%02d", selectedHour, selectedMinute));//Ayarla butonu tıklandığında textview'a yazdırıyoruz
-                    }
-                }, hour, minute, true);//true 24 saatli sistem için
-                timePicker.setTitle("End Time");
-                timePicker.setButton(DatePickerDialog.BUTTON_POSITIVE, "OK", timePicker);
-                timePicker.setButton(DatePickerDialog.BUTTON_NEGATIVE, "Cancel", timePicker);
 
-                timePicker.show();
 
-            }
-        });
+
+        //Edit End Time/////////////////
+
+
+
+
+
+
+
+
     }
 
 }

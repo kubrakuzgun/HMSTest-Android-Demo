@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+////////////Todo list adapter , Meeting List Adapter On item click listener /////////////////
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ToDoListAdapter.OnItemClickListener, MeetingListAdapter.OnItemClickListener {
 
     private DrawerLayout drawerLayout;
@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseHelper = new DatabaseHelper(MainActivity.this);
         ///
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        ///Locate the lists to this activity layout.
-        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
-        todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
+
 
 
         //display current date
@@ -112,32 +110,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         formattedDate = sdf.format(currentDateTime.getTime());
         Log.d("formatted date", formattedDate);
 
-        //List To do
-        mTodos = new ArrayList<>();
-        mTodos.clear();
-        mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
-        mAdapter = new ToDoListAdapter(MainActivity.this, mTodos);
-        mAdapter.setOnItemClickListener(MainActivity.this);
-        if (mAdapter.getItemCount() > 0) {
-            textNotodo.setVisibility(View.INVISIBLE);
-            mTodos.clear();
-            mTodos.addAll(databaseHelper.getTodoByDate(databaseHelper.getIDfromUsername(user), formattedDate));
-            //attach adapter to activity's view (add card to recycler view)
-            todaysTodoList.setAdapter(mAdapter);
-        }
 
-        //List Meeting
-        mMeetings = new ArrayList<>();
-        mMeetings.clear();
-        mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user), formattedDate));
-        meetingAdapter = new MeetingListAdapter(MainActivity.this, mMeetings);
-        meetingAdapter.setOnItemClickListener(MainActivity.this);
-        if (meetingAdapter.getItemCount() > 0) {
-            textNoMeeting.setVisibility((View.INVISIBLE));
-            mMeetings.clear();
-            mMeetings.addAll(databaseHelper.getMeetingByDate(databaseHelper.getIDfromUsername(user),formattedDate));
-           todaysMeetingList.setAdapter(meetingAdapter);
-        }
+        //////////////////////////////////////////////////////////////////////////
+        ///Locate the lists to this activity layout.
+        todaysTodoList.setLayoutManager(new LinearLayoutManager(this));
+        todaysMeetingList.setLayoutManager(new LinearLayoutManager(this));
+        ////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////List To do////////////////////////////
+
+
+        ///////////////////List Meeting//////////////////////
+
+
+
 
 
         //side menu
