@@ -58,7 +58,8 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1" />
+                app:layout_constraintHorizontal_bias="0.1"
+                />
 
                 <EditText
                     android:id="@+id/edtxt_meetingDate"
@@ -70,7 +71,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.1"
-                    />
+                    android:clickable="false"
+                    android:editable="false"/>
                 <ImageButton
                     android:id="@+id/btn_meetingDateEdit"
                     android:layout_width="30sp"
@@ -104,7 +106,9 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"/>
+                    app:layout_constraintHorizontal_bias="0.1"
+                    android:clickable="false"
+                    android:editable="false"/>
 
                 <ImageButton
                     android:id="@+id/btn_meetingStartEdit"
@@ -140,7 +144,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.1"
-                    />
+                    android:clickable="false"
+                    android:editable="false"/>
                 <ImageButton
                     android:id="@+id/btn_meetingEndEdit"
                     android:layout_width="30sp"
